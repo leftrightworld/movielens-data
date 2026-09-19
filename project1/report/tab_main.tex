@@ -1,0 +1,13 @@
+\begin{tabular}{llrrrrr}
+\toprule
+Dataset & Model & R@10 & N@10 & R@20 & N@20 & Best ep. \\
+\midrule
+MovieLens-1M & MF-BPR & 0.1560 & 0.2456 & 0.2384 & 0.2525 & 45 \\
+ & LightGCN ($L{=}3$) & 0.1728 & 0.2605 & 0.2638 & 0.2709 & 450 \\
+ & \emph{relative gain} & +10.8\% & +6.1\% & +10.6\% & +7.3\% & \\
+\midrule
+Video Games & MF-BPR & 0.0634 & 0.0344 & 0.0969 & 0.0431 & 125 \\
+ & LightGCN ($L{=}3$) & 0.0907 & 0.0494 & 0.1349 & 0.0608 & 565 \\
+ & \emph{relative gain} & +43.2\% & +43.5\% & +39.3\% & +41.2\% & \\
+\bottomrule
+\end{tabular}
