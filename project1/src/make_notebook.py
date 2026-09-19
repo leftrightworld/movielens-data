@@ -51,7 +51,7 @@ def load_result(name):
 
 C.append(md(r"""## 2. Data
 
-Sources: MovieLens-1M (`../ratings.csv`, from grouplens.org) and Amazon Reviews
+Sources: MovieLens-1M (`../movielens-1m/ratings.csv`, from grouplens.org) and Amazon Reviews
 2023 Video Games (`../amazon-vgames-2023/ratings_part{1,2}.csv.gz`, from the
 McAuley-Lab repository). Preprocessing (`src/data_prep.py`, run once with
 `python3 src/data_prep.py`): implicit feedback, duplicates collapsed, iterative
@@ -236,13 +236,13 @@ display(pd.DataFrame(rows).set_index(["dataset", "model"]))
 """))
 
 C.append(md("### 6.3 Case study (MovieLens-1M): one cold and one heavy user"))
-C.append(code(r"""movies = pd.read_csv(ROOT.parent / "movies.csv")
+C.append(code(r"""movies = pd.read_csv(ROOT.parent / "movielens-1m" / "movies.csv")
 z = np.load(DATA / "ml-1m.npz")
 n_users = int(z["n_users"])
 train_deg = np.bincount(z["train"][:, 0], minlength=n_users)
 
 # Reconstruct the item-id mapping used by data_prep (sorted raw ids).
-ml = pd.read_csv(ROOT.parent / "ratings.csv", usecols=["user_id", "movie_id"])
+ml = pd.read_csv(ROOT.parent / "movielens-1m" / "ratings.csv", usecols=["user_id", "movie_id"])
 ml.columns = ["user", "item"]
 ml = ml.drop_duplicates()
 # apply same 5-core as data_prep

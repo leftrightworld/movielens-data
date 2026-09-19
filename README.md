@@ -1,58 +1,37 @@
-# MovieLens 1M — CSV for analysis
+# movielens-data
 
-Converted from the official [MovieLens 1M dataset](https://grouplens.org/datasets/movielens/1m/) (GroupLens Research).
+Datasets and course work for **Project 1 — Technical Review** (recommender
+systems: MF-BPR vs. LightGCN).
 
-| File | Rows | Columns |
-|------|------|---------|
-| ratings.csv | 1,000,209 | user_id, movie_id, rating, timestamp, datetime |
-| movies.csv | 3,883 | movie_id, title, genres, year |
-| users.csv | 6,040 | user_id, gender, age, occupation, zip_code, age_group, occupation_name |
+## Repository map
 
-## Load in Google Colab
-
-```python
-import pandas as pd
-
-base = "https://raw.githubusercontent.com/leftrightworld/movielens-data/main/"
-ratings = pd.read_csv(base + "ratings.csv")
-movies  = pd.read_csv(base + "movies.csv")
-users   = pd.read_csv(base + "users.csv")
+```
+movielens-data/
+├── movielens-1m/            MovieLens-1M as analysis-ready CSVs
+├── amazon-vgames-2023/      Amazon Reviews 2023 "Video Games" as CSVs
+├── project1/                the course project (code, experiments, report)
+│   ├── project1_report.ipynb   code-companion notebook (executed, with figures)
+│   ├── report/                 LaTeX report + compiled report.pdf (7 pages)
+│   ├── src/                    all source code (models, training, data prep)
+│   ├── data/                   preprocessed splits (npz) + statistics
+│   ├── results/                one JSON log per experiment + saved embeddings
+│   └── figures/                all figures used by the notebook and report
+└── project1-technical-review.pdf   the assignment brief
 ```
 
-Data usage subject to the original GroupLens license (research/non-commercial, cite the MovieLens paper).
+## Where to start
 
----
+* **Read the findings** → `project1/report/report.pdf`
+* **Read / run the code** → `project1/project1_report.ipynb` (see `project1/README.md`)
+* **Just want the datasets** → the two dataset folders below; each has its own
+  README with column descriptions and a Colab-ready loading snippet.
 
-# Amazon Reviews 2023 — Video Games (CSV)
+## Datasets at a glance
 
-Converted from [Amazon Reviews 2023](https://amazon-reviews-2023.github.io/) (McAuley Lab, UCSD), category **Video_Games**. Ratings are split into two parts to stay under GitHub's 100 MB file limit; review text and image/video URLs are omitted (the full raw data is on the official site). Files are gzipped CSV — pandas reads them directly.
+| Folder | Source | Size | Notes |
+|--------|--------|------|-------|
+| `movielens-1m/` | [GroupLens](https://grouplens.org/datasets/movielens/1m/) | 1.0M ratings, 6,040 users, ~3.9K movies | dense benchmark |
+| `amazon-vgames-2023/` | [Amazon Reviews 2023](https://amazon-reviews-2023.github.io/) (McAuley Lab) | 4.62M ratings, 137K products | sparse e-commerce; ratings split in two files for GitHub's 100 MB limit |
 
-| File | Rows | Columns |
-|------|------|---------|
-| amazon-vgames-2023/ratings_part1.csv.gz | 2,312,308 | rating, asin, parent_asin, user_id, timestamp (ms), verified_purchase, helpful_vote |
-| amazon-vgames-2023/ratings_part2.csv.gz | 2,312,307 | (same schema) |
-| amazon-vgames-2023/products.csv.gz | 137,269 | parent_asin, title, main_category, average_rating, rating_number, price, store, features, description, num_images, num_videos, details (JSON) |
-
-Join key: `parent_asin`. Convert timestamp with `pd.to_datetime(df.timestamp, unit="ms")`.
-
-## Load in Google Colab
-
-```python
-import pandas as pd
-
-base = "https://raw.githubusercontent.com/leftrightworld/movielens-data/main/amazon-vgames-2023/"
-ratings = pd.concat([pd.read_csv(base + f"ratings_part{i}.csv.gz") for i in (1, 2)],
-                    ignore_index=True)
-products = pd.read_csv(base + "products.csv.gz")
-```
-
-Data usage subject to the original dataset license (cite McAuley Lab, Amazon Reviews 2023).
-
----
-
-# Project 1 — Technical Review (course project)
-
-See `project1/`: MF-BPR vs LightGCN on MovieLens-1M and Amazon Video Games 2023,
-implemented from scratch in PyTorch. Entry point: `project1/project1_report.ipynb`
-(fully executed, all figures included). Reproduce: `python3 project1/src/data_prep.py`
-then `bash project1/src/run_all.sh`.
+Data usage is subject to the original licenses (GroupLens; McAuley Lab) —
+research / non-commercial, cite the sources.

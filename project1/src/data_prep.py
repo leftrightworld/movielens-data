@@ -81,7 +81,7 @@ def split_and_save(df: pd.DataFrame, name: str) -> dict:
 def main():
     OUT.mkdir(exist_ok=True)
 
-    ml = pd.read_csv(ROOT / "ratings.csv", usecols=["user_id", "movie_id"])
+    ml = pd.read_csv(ROOT / "movielens-1m" / "ratings.csv", usecols=["user_id", "movie_id"])
     ml.columns = ["user", "item"]
     print(json.dumps(split_and_save(ml, "ml-1m"), indent=2))
 
