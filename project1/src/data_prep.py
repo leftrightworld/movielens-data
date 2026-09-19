@@ -1,4 +1,4 @@
-"""Preprocess MovieLens-1M and Amazon All_Beauty into implicit-feedback splits.
+"""Preprocess MovieLens-1M and Amazon Video Games into implicit-feedback splits.
 
 Protocol (standard for implicit top-K recommendation, cf. LightGCN / NGCF):
   1. Every observed (user, item) interaction is a positive signal (implicit feedback).
@@ -85,17 +85,14 @@ def main():
     ml.columns = ["user", "item"]
     print(json.dumps(split_and_save(ml, "ml-1m"), indent=2))
 
-    bt = pd.read_csv(ROOT / "amazon-beauty-2023" / "reviews.csv.gz",
-                     usecols=["user_id", "parent_asin"])
-    bt.columns = ["user", "item"]
-    print(json.dumps(split_and_save(bt, "beauty"), indent=2))
-
-    # Amazon Video_Games 2023: (user, parent_asin) pairs pre-extracted from the
-    # raw Video_Games.jsonl (see notebook Section 2 for the download source).
-    vg_path = OUT / "video_games_pairs.parquet"
-    if vg_path.exists():
-        vg = pd.read_parquet(vg_path)
-        print(json.dumps(split_and_save(vg, "vgames"), indent=2))
+    vg = pd.concat([
+        pd.read_csv(ROOT / "amazon-vgames-2023" / f"ratings_part{i}.csv.gz",
+                    usecols=["user_id", "parent_asin"])
+        for i in (1, 2)
+    ], ignore_index=True)
+    vg = vg[["user_id", "parent_asin"]]
+    vg.columns = ["user", "item"]
+    print(json.dumps(split_and_save(vg, "vgames"), indent=2))
 
 
 if __name__ == "__main__":

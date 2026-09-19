@@ -75,48 +75,29 @@ print(f"{len(ratings):,} ratings | {ratings.user_id.nunique():,} users | "
       f"{ratings.movie_id.nunique():,} movies")
 """))
 
-C.append(md(r"""### 2.2 Amazon Reviews 2023 — why *Video Games* (a negative result worth reporting)
+C.append(md(r"""### 2.2 Amazon Reviews 2023 — Video Games
 
-Our second dataset comes from **Amazon Reviews 2023** (McAuley Lab, UCSD;
-<https://amazon-reviews-2023.github.io/>). We initially selected the *All_Beauty*
-category (701K reviews). However, an interaction-graph analysis shows that this
-category **cannot support collaborative-filtering evaluation at all**: most users
-wrote exactly one review, so the standard 5-core filter collapses the dataset to
-almost nothing — and even a 2-core leaves users with too few interactions to split
-into train/validation/test."""))
+Our second dataset is the **Video_Games** category of **Amazon Reviews 2023**
+(McAuley Lab, UCSD; <https://amazon-reviews-2023.github.io/>): **4.62M reviews**
+of 137K products, collected 1996–2023. Gaming is a hobby with frequent repeat
+purchasing, so the category retains a healthy interaction graph after the
+standard 5-core filter: **814,586 interactions** — the same order of magnitude
+as MovieLens-1M but **144× sparser**, giving us exactly the density contrast
+the comparison needs.
 
-C.append(code(r"""beauty = pd.read_csv(ROOT.parent / "amazon-beauty-2023" / "reviews.csv.gz",
-                     usecols=["user_id", "parent_asin"])
-beauty.columns = ["user", "item"]
-beauty = beauty.drop_duplicates()
+*Files used:* `amazon-vgames-2023/ratings_part{1,2}.csv.gz` (user, item, rating,
+timestamp — converted from the official `Video_Games.jsonl`); product metadata
+in `amazon-vgames-2023/products.csv.gz`."""))
 
-def k_core(df, k):
-    while True:
-        uc = df["user"].map(df["user"].value_counts())
-        ic = df["item"].map(df["item"].value_counts())
-        keep = (uc >= k) & (ic >= k)
-        if keep.all():
-            return df
-        df = df[keep]
-
-rows = [{"filter": "none (dedup)", "interactions": len(beauty),
-         "users": beauty.user.nunique(), "items": beauty.item.nunique()}]
-for k in (2, 3, 5):
-    d = k_core(beauty.copy(), k)
-    rows.append({"filter": f"{k}-core", "interactions": len(d),
-                 "users": d.user.nunique(), "items": d.item.nunique()})
-display(pd.DataFrame(rows).set_index("filter"))
-print("All_Beauty collapses under k-core filtering -> unusable for CF evaluation.")
+C.append(code(r"""vgames_raw = pd.concat([
+    pd.read_csv(ROOT.parent / "amazon-vgames-2023" / f"ratings_part{i}.csv.gz",
+                usecols=["user_id", "parent_asin", "rating", "timestamp"])
+    for i in (1, 2)
+], ignore_index=True)
+display(vgames_raw.head(3))
+print(f"{len(vgames_raw):,} reviews | {vgames_raw.user_id.nunique():,} users | "
+      f"{vgames_raw.parent_asin.nunique():,} products")
 """))
-
-C.append(md(r"""This is itself a finding we discuss in the report: **real long-tail e-commerce
-feedback is qualitatively different from academic benchmarks** — the majority of
-users are one-shot reviewers with no collaborative signal.
-
-We therefore switched to the **Video_Games** category (4.6M raw reviews), where
-repeat purchasing is common. After 5-core filtering it keeps a healthy graph of
-**814,586 interactions** — the same order of magnitude as MovieLens-1M but **144×
-sparser**, giving us exactly the density contrast the comparison needs."""))
 
 C.append(md("### 2.3 The two datasets side by side"))
 C.append(code(r"""stats = pd.DataFrame([json.load(open(DATA / "ml-1m_stats.json")),
@@ -453,11 +434,6 @@ C.append(md(r"""## 6. Conclusions
    45–125; LightGCN needs 450–565 epochs *and* a full-graph propagation every
    optimization step. With similar parameter counts, LightGCN buys its accuracy
    with ~10× the training compute (Section 5.2).
-6. **Dataset finding**: the raw Amazon *All_Beauty* 2023 category is unusable for
-   CF evaluation — 5-core filtering collapses 693K interactions to 2.5K because
-   most users are one-shot reviewers (Section 2.2). Benchmark choice presupposes
-   a minimum of collaborative signal; we consider this negative result as
-   informative as the main comparison.
 
 ## 7. Reproducibility
 
@@ -472,10 +448,10 @@ project1/
 └── figures/                # all figures saved by this notebook
 ```
 
-* Raw data: MovieLens-1M from grouplens.org; Amazon Reviews 2023 (Video_Games,
-  All_Beauty) from the McAuley-Lab HuggingFace repository. Place the converted
-  CSVs as described in Section 2 (paths are relative; no network access needed
-  to run this notebook).
+* Raw data: MovieLens-1M from grouplens.org; Amazon Reviews 2023 (Video_Games)
+  from the McAuley-Lab HuggingFace repository. Place the converted CSVs as
+  described in Section 2 (paths are relative; no network access needed to run
+  this notebook).
 * Environment: Python 3.9+, `torch`, `pandas`, `numpy`, `matplotlib`. Seeds fixed (42).
 * Hardware: experiments were run on an NVIDIA L4 (AWS g6.xlarge); the pipeline also
   runs on a MacBook Air M2 (16 GB, MPS) with no code changes — the MF run produced

@@ -23,14 +23,15 @@ Data usage subject to the original GroupLens license (research/non-commercial, c
 
 ---
 
-# Amazon Reviews 2023 — All_Beauty (CSV)
+# Amazon Reviews 2023 — Video Games (CSV)
 
-Converted from [Amazon Reviews 2023](https://amazon-reviews-2023.github.io/) (McAuley Lab, UCSD), category **All_Beauty**. Image/video URL fields were dropped (kept as counts) to fit GitHub; files are gzipped CSV — pandas reads them directly.
+Converted from [Amazon Reviews 2023](https://amazon-reviews-2023.github.io/) (McAuley Lab, UCSD), category **Video_Games**. Ratings are split into two parts to stay under GitHub's 100 MB file limit; review text and image/video URLs are omitted (the full raw data is on the official site). Files are gzipped CSV — pandas reads them directly.
 
 | File | Rows | Columns |
 |------|------|---------|
-| amazon-beauty-2023/reviews.csv.gz | 701,528 | rating, title, text, asin, parent_asin, user_id, timestamp (ms), verified_purchase, helpful_vote, num_images |
-| amazon-beauty-2023/products.csv.gz | 112,590 | parent_asin, title, main_category, average_rating, rating_number, price, store, features, description, num_images, num_videos, details (JSON) |
+| amazon-vgames-2023/ratings_part1.csv.gz | 2,312,308 | rating, asin, parent_asin, user_id, timestamp (ms), verified_purchase, helpful_vote |
+| amazon-vgames-2023/ratings_part2.csv.gz | 2,312,307 | (same schema) |
+| amazon-vgames-2023/products.csv.gz | 137,269 | parent_asin, title, main_category, average_rating, rating_number, price, store, features, description, num_images, num_videos, details (JSON) |
 
 Join key: `parent_asin`. Convert timestamp with `pd.to_datetime(df.timestamp, unit="ms")`.
 
@@ -39,8 +40,9 @@ Join key: `parent_asin`. Convert timestamp with `pd.to_datetime(df.timestamp, un
 ```python
 import pandas as pd
 
-base = "https://raw.githubusercontent.com/leftrightworld/movielens-data/main/amazon-beauty-2023/"
-reviews  = pd.read_csv(base + "reviews.csv.gz")
+base = "https://raw.githubusercontent.com/leftrightworld/movielens-data/main/amazon-vgames-2023/"
+ratings = pd.concat([pd.read_csv(base + f"ratings_part{i}.csv.gz") for i in (1, 2)],
+                    ignore_index=True)
 products = pd.read_csv(base + "products.csv.gz")
 ```
 
