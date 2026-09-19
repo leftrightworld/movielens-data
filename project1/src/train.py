@@ -97,7 +97,8 @@ def main():
 
     torch.manual_seed(args.seed)
     rng = np.random.default_rng(args.seed)
-    device = "mps" if torch.backends.mps.is_available() else "cpu"
+    device = ("cuda" if torch.cuda.is_available()
+              else "mps" if torch.backends.mps.is_available() else "cpu")
 
     train, valid, test, n_users, n_items = load_dataset(args.dataset)
     train_by_user = group_by_user(train, n_users)
