@@ -28,3 +28,7 @@ products = pd.read_csv(base + "products.csv.gz")
 
 Data usage subject to the original dataset license (cite McAuley Lab,
 Amazon Reviews 2023: Hou et al., arXiv:2403.03952).
+
+## Provenance
+
+These CSVs were generated from the raw McAuley-Lab jsonl files by `convert.py` in this folder — see its docstring for usage.

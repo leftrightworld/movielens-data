@@ -26,3 +26,7 @@ users   = pd.read_csv(base + "users.csv")
 
 Data usage subject to the original GroupLens license (research/non-commercial,
 cite the MovieLens paper: Harper & Konstan, ACM TiiS 2015).
+
+## Provenance
+
+These CSVs were generated from the official ml-1m.zip by `convert.py` in this folder — see its docstring for usage.
