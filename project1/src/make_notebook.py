@@ -29,8 +29,9 @@ methods on two datasets with very different interaction densities:
 | Name | **MovieLens-1M** | **Amazon Reviews 2023 — Video Games** |
 | Nature | Dense movie ratings | Sparse e-commerce reviews |
 
-Both models are implemented **from scratch in PyTorch** (`src/models.py`, ~100 lines total)
-and trained **locally on an Apple M2 laptop (CPU/MPS, no discrete GPU)**.
+Both models are implemented **from scratch in PyTorch** (`src/models.py`, ~100 lines total).
+The full experiment queue runs in ≈ 1.5 h on a single NVIDIA L4 GPU, and also runs
+unmodified on an Apple-Silicon laptop (see Section 7 on reproducibility).
 All numbers, figures and case studies in the report are produced by this code —
 nothing is copied from published papers.
 """))
@@ -199,11 +200,17 @@ by construction.
 * LightGCN propagates the full graph every optimization step, so we use a large batch
   (65,536) — 9× fewer propagations per epoch, 110 s → 12 s per epoch on M2, with
   identical convergence in validation metrics.
-* Early stopping on validation NDCG@10 (patience = 30 epochs), max 300 epochs.
+* Early stopping on validation NDCG@10 (patience = 30 epochs). Budget: max 300
+  epochs for MF (always early-stops well before), **600 epochs for LightGCN** —
+  at a 300-epoch cap several LightGCN configs were still improving, which
+  initially *reversed* the layer-ablation ordering (see Section 5.3). All
+  LightGCN configs reported here use the fair 600-epoch budget.
 
 ## 5. Experiments
 
-All runs: `bash src/run_all.sh` (≈ 6 h total on a MacBook Air M2, 16 GB).
+All runs: `bash src/run_all.sh` (≈ 1.5 h on one NVIDIA L4 GPU; also runs
+overnight on a MacBook Air M2 — we verified the MF results are identical
+across the two machines).
 Hyperparameters: Adam, lr $10^{-3}$ (MF) / $3\times10^{-3}$ (LightGCN, large-batch),
 $L_2$ reg $10^{-4}$, embedding dim 64 unless stated.
 
@@ -248,7 +255,15 @@ C.append(md(r"""### 5.3 Ablation: number of propagation layers
 
 The layer count $L$ is LightGCN's key component — it controls how many hops of
 collaborative signal are mixed into each embedding. $L=0$ would reduce LightGCN
-exactly to MF, so this ablation directly measures the value of graph propagation."""))
+exactly to MF, so this ablation directly measures the value of graph propagation.
+
+**A methodological lesson we hit here:** with a 300-epoch budget, the curve
+appeared to *peak* at $L=2$–$3$ and drop at $L=4$ — the classic "over-smoothing"
+picture. Doubling the budget to 600 epochs removed the drop entirely: deeper
+propagation simply converges more slowly (best epoch grows from 110 at $L=1$ to
+~565 at $L=4$), so an unfair training budget masquerades as over-smoothing.
+Under the fair 600-epoch budget used below, NDCG@10 increases monotonically up
+to $L=4$ on MovieLens-1M and saturates at $L=3$–$4$ on Video Games."""))
 
 C.append(code(r"""fig, axes = plt.subplots(1, 2, figsize=(11, 3.6))
 for ax, ds, title in ((axes[0], "ml-1m", "MovieLens-1M"),
@@ -306,12 +321,18 @@ for ax, ds, title in ((axes[0], "ml-1m", "MovieLens-1M"),
     for model, label in (("mf_d64", "MF-BPR"), ("lightgcn_d64_l3", "LightGCN L=3")):
         topk = np.load(RESULTS / f"{ds}_{model}_emb.npz")["topk"]
         recs[label] = per_user_recall(topk, test_by_user)
-    qs = np.quantile(train_deg, [0, .25, .5, .75, 1.0])
-    labels_q = [f"Q{j+1}\n({int(qs[j])}-{int(qs[j+1])})" for j in range(4)]
-    x = np.arange(4)
+    # Quantile-based degree bins; np.unique guards against degenerate
+    # quantiles on Video Games, where most users have only 3-7 interactions.
+    edges = np.unique(np.quantile(train_deg, [0, .25, .5, .75, 1.0]).astype(int))
+    bins = [(edges[j], edges[j + 1]) for j in range(len(edges) - 1)]
+    labels_q = [f"{lo}-{hi - 1}" if j < len(bins) - 1 else f"{lo}+"
+                for j, (lo, hi) in enumerate(bins)]
+    x = np.arange(len(bins))
     for off, (label, r) in zip((-0.17, 0.17), recs.items()):
-        means = [np.nanmean(r[(train_deg >= qs[j]) & (train_deg < qs[j+1] + (j == 3))])
-                 for j in range(4)]
+        means = []
+        for j, (lo, hi) in enumerate(bins):
+            mask = (train_deg >= lo) & ((train_deg < hi) | (j == len(bins) - 1))
+            means.append(np.nanmean(r[mask]))
         ax.bar(x + off, means, width=0.34, label=label)
     ax.set_xticks(x, labels_q); ax.set_ylabel("Recall@20")
     ax.set_xlabel("user activity quartile (train interactions)")
@@ -400,22 +421,43 @@ for u, kind in ((cold, "LOW-activity"), ((heavy), "HIGH-activity")):
 
 C.append(md(r"""## 6. Conclusions
 
-*(Numbers below are filled from the tables above; see the report PDF for the full discussion.)*
-
 1. **Higher-order graph signal helps, and helps most where data is sparse.**
-   LightGCN outperforms MF-BPR on both datasets, with a clearly larger relative
-   gain on the 144×-sparser Video-Games dataset (Sections 5.1, 5.3).
-2. **The gain is concentrated on low-activity users** (Section 5.5) — consistent
-   with the interpretation that propagation lets cold users borrow signal from
-   their neighborhood.
-3. **Layer ablation**: performance rises up to L≈2–3 and then saturates/degrades
-   (over-smoothing); even L=1 beats MF (Section 5.3).
-4. **Trade-offs**: LightGCN costs more per epoch (full-graph propagation each step)
-   and inherits popularity bias; MF trains faster and is easier to scale. See the
-   coverage/popularity analysis in Section 5.6.
-5. **Dataset finding**: the raw Amazon *All_Beauty* 2023 category is unusable for
-   CF evaluation (Section 2.2) — a practical reminder that method benchmarks
-   presuppose a minimum of collaborative signal.
+   LightGCN beats MF-BPR on both datasets, but the margin differs by an order of
+   magnitude: **+6.1%** NDCG@10 on dense MovieLens-1M (0.246 → 0.261) versus
+   **+43.6%** on the 144×-sparser Video Games (0.0344 → 0.0494); Recall@20 gains
+   are +10.7% and +39.2% respectively (Section 5.1).
+2. **The gain is concentrated on low-activity users.** On MovieLens-1M the
+   improvement falls monotonically with user activity: +14.6% Recall@20 for the
+   coldest quartile (≤ 36 train interactions) down to +3.9% for the most active
+   quartile (Section 5.5). Propagation lets cold users borrow their neighbors'
+   signal; heavy users already give MF enough direct evidence.
+3. **How LightGCN wins differs by regime — and is not free.** On dense data it
+   *reduces* popularity bias (mean popularity of recommended items 1150 → 994)
+   and *raises* catalog coverage (51% → 61%). On sparse data the opposite
+   happens: propagation concentrates mass on bestsellers (mean popularity
+   373 → 418) and coverage *drops* from 62% to 41% (Section 5.6). Part of the
+   +43.6% on Video Games is therefore a popularity bet — a real weakness if the
+   product goal values discovery, and our candidate direction for the "improve
+   the method" extension.
+4. **Layer ablation** (Section 5.3): even L=1 clearly beats MF on both datasets
+   (+26% NDCG@10 on Video Games). Under a *fair* 600-epoch budget we observe **no
+   over-smoothing up to L=4**: accuracy grows monotonically on MovieLens-1M and
+   saturates at L=3–4 on Video Games. The "peak at shallow L" we saw first was an
+   artifact of a 300-epoch cap — deeper models converge more slowly (best epoch
+   110 at L=1 vs ~565 at L=4), a caveat worth remembering when reading ablation
+   tables in the literature.
+   Also noteworthy from the dimension sweep (Section 5.4): **LightGCN at d=16 —
+   a quarter of the parameters — still beats MF at d=64 on both datasets**, i.e.
+   the graph prior buys more than extra capacity does.
+5. **Convergence/cost trade-off**: MF reaches its best validation score by epoch
+   45–125; LightGCN needs 450–565 epochs *and* a full-graph propagation every
+   optimization step. With similar parameter counts, LightGCN buys its accuracy
+   with ~10× the training compute (Section 5.2).
+6. **Dataset finding**: the raw Amazon *All_Beauty* 2023 category is unusable for
+   CF evaluation — 5-core filtering collapses 693K interactions to 2.5K because
+   most users are one-shot reviewers (Section 2.2). Benchmark choice presupposes
+   a minimum of collaborative signal; we consider this negative result as
+   informative as the main comparison.
 
 ## 7. Reproducibility
 
@@ -435,7 +477,10 @@ project1/
   CSVs as described in Section 2 (paths are relative; no network access needed
   to run this notebook).
 * Environment: Python 3.9+, `torch`, `pandas`, `numpy`, `matplotlib`. Seeds fixed (42).
-* Hardware: MacBook Air M2, 16 GB RAM — no discrete GPU required.
+* Hardware: experiments were run on an NVIDIA L4 (AWS g6.xlarge); the pipeline also
+  runs on a MacBook Air M2 (16 GB, MPS) with no code changes — the MF run produced
+  **identical test metrics on both machines**, since all sampling uses a seeded
+  NumPy generator on the CPU.
 """))
 
 nb.cells = C

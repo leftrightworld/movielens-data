@@ -45,3 +45,12 @@ products = pd.read_csv(base + "products.csv.gz")
 ```
 
 Data usage subject to the original dataset license (cite McAuley Lab, Amazon Reviews 2023).
+
+---
+
+# Project 1 — Technical Review (course project)
+
+See `project1/`: MF-BPR vs LightGCN on MovieLens-1M and Amazon Video Games 2023,
+implemented from scratch in PyTorch. Entry point: `project1/project1_report.ipynb`
+(fully executed, all figures included). Reproduce: `python3 project1/src/data_prep.py`
+then `bash project1/src/run_all.sh`.
