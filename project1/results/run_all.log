@@ -1,0 +1,18 @@
+[ml-1m_mf_d64] epoch   5 loss 0.3887 valid ndcg@10 0.1335 recall@20 0.1272 *
+[ml-1m_mf_d64] epoch  10 loss 0.3416 valid ndcg@10 0.1540 recall@20 0.1522 *
+[ml-1m_mf_d64] epoch  15 loss 0.3161 valid ndcg@10 0.1648 recall@20 0.1694 *
+[ml-1m_mf_d64] epoch  20 loss 0.2988 valid ndcg@10 0.1753 recall@20 0.1826 *
+[ml-1m_mf_d64] epoch  25 loss 0.2855 valid ndcg@10 0.1807 recall@20 0.1912 *
+[ml-1m_mf_d64] epoch  30 loss 0.2753 valid ndcg@10 0.1854 recall@20 0.1996 *
+[ml-1m_mf_d64] epoch  35 loss 0.2665 valid ndcg@10 0.1901 recall@20 0.2075 *
+[ml-1m_mf_d64] epoch  40 loss 0.2592 valid ndcg@10 0.1914 recall@20 0.2130 *
+[ml-1m_mf_d64] epoch  45 loss 0.2515 valid ndcg@10 0.1939 recall@20 0.2151 *
+[ml-1m_mf_d64] epoch  50 loss 0.2446 valid ndcg@10 0.1937 recall@20 0.2196
+[ml-1m_mf_d64] epoch  55 loss 0.2368 valid ndcg@10 0.1933 recall@20 0.2214
+[ml-1m_mf_d64] epoch  60 loss 0.2311 valid ndcg@10 0.1931 recall@20 0.2223
+[ml-1m_mf_d64] epoch  65 loss 0.2263 valid ndcg@10 0.1930 recall@20 0.2237
+[ml-1m_mf_d64] epoch  70 loss 0.2215 valid ndcg@10 0.1923 recall@20 0.2248
+[ml-1m_mf_d64] epoch  75 loss 0.2180 valid ndcg@10 0.1913 recall@20 0.2248
+[ml-1m_mf_d64] early stop at epoch 75
+[ml-1m_mf_d64] TEST {"recall@10": 0.15597845175536235, "ndcg@10": 0.24563827661588972, "recall@20": 0.23841585575178603, "ndcg@20": 0.2525338789875559} -> /Users/yufengyuan/Desktop/movielens-data/project1/results/ml-1m_mf_d64.json
+[ml-1m_lightgcn_d64_l3] epoch   5 loss 0.4555 valid ndcg@10 0.1097 recall@20 0.1138 *

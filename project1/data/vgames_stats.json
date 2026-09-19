@@ -1,0 +1,15 @@
+{
+  "dataset": "vgames",
+  "interactions_after_dedup": 4555500,
+  "interactions_after_5core": 814586,
+  "n_users": 94762,
+  "n_items": 25612,
+  "density_pct": 0.0336,
+  "avg_interactions_per_user": 8.6,
+  "avg_interactions_per_item": 31.8,
+  "split": {
+    "train": 597090,
+    "valid": 108748,
+    "test": 108748
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "dataset": "ml-1m",
+  "interactions_after_dedup": 1000209,
+  "interactions_after_5core": 999611,
+  "n_users": 6040,
+  "n_items": 3416,
+  "density_pct": 4.8448,
+  "avg_interactions_per_user": 165.5,
+  "avg_interactions_per_item": 292.63,
+  "split": {
+    "train": 799821,
+    "valid": 99895,
+    "test": 99895
+  }
+}

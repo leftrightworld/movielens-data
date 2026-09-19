@@ -1,0 +1,15 @@
+{
+  "dataset": "beauty",
+  "interactions_after_dedup": 693929,
+  "interactions_after_5core": 2535,
+  "n_users": 356,
+  "n_items": 253,
+  "density_pct": 2.8145,
+  "avg_interactions_per_user": 7.12,
+  "avg_interactions_per_item": 10.02,
+  "split": {
+    "train": 1821,
+    "valid": 357,
+    "test": 357
+  }
+}
