@@ -146,7 +146,19 @@ for ax, ds, title in ((axes[0], "ml-1m", "MovieLens-1M"),
 plt.tight_layout(); plt.savefig(FIGS / "convergence.png", bbox_inches="tight"); plt.show()
 """))
 
-C.append(md("### 5.3 Ablation: propagation layers L (fair 600-epoch budget for every L)"))
+C.append(md("### 5.3 Training loss (BPR) per epoch"))
+C.append(code(r"""fig, axes = plt.subplots(1, 2, figsize=(11, 3.6))
+for ax, ds, title in ((axes[0], "ml-1m", "MovieLens-1M"),
+                      (axes[1], "vgames", "Amazon Video Games")):
+    for model, label in (("mf_d64", "MF-BPR"), ("lightgcn_d64_l3", "LightGCN L=3")):
+        h = load_result(f"{ds}_{model}")["history"]
+        ax.plot([e["epoch"] for e in h], [e["loss"] for e in h], label=label)
+    ax.set_title(title); ax.set_xlabel("epoch"); ax.set_ylabel("training BPR loss")
+    ax.legend()
+plt.tight_layout(); plt.savefig(FIGS / "loss_curves.png", bbox_inches="tight"); plt.show()
+"""))
+
+C.append(md("### 5.4 Ablation: propagation layers L (fair 600-epoch budget for every L)"))
 C.append(code(r"""fig, axes = plt.subplots(1, 2, figsize=(11, 3.6))
 for ax, ds, title in ((axes[0], "ml-1m", "MovieLens-1M"),
                       (axes[1], "vgames", "Amazon Video Games")):
@@ -162,7 +174,7 @@ for ax, ds, title in ((axes[0], "ml-1m", "MovieLens-1M"),
 plt.tight_layout(); plt.savefig(FIGS / "ablation_layers.png", bbox_inches="tight"); plt.show()
 """))
 
-C.append(md("### 5.4 Embedding dimension sweep"))
+C.append(md("### 5.5 Embedding dimension sweep"))
 C.append(code(r"""fig, axes = plt.subplots(1, 2, figsize=(11, 3.6))
 for ax, ds, title in ((axes[0], "ml-1m", "MovieLens-1M"),
                       (axes[1], "vgames", "Amazon Video Games")):

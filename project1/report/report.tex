@@ -205,6 +205,23 @@ On Video Games the two curves cross around epoch 90 --- before that, MF is
 the better model. In compute-constrained settings this trade-off matters as
 much as the final number.
 
+\begin{figure}[h]\centering
+\includegraphics[width=\textwidth]{loss_curves.png}
+\caption{Training BPR loss per epoch. MF drives the loss down faster and
+further (its curves stop early because of early stopping), yet ranks held-out
+items worse.}
+\label{fig:loss}
+\end{figure}
+
+The training-loss curves (Figure~\ref{fig:loss}) complete the picture from
+the optimization side: MF fits the training pairs faster and more aggressively
+than LightGCN, yet generalizes worse (Table~\ref{tab:main}). The propagation
+step acts as a structural regularizer --- each embedding is tied to its
+neighborhood average, so LightGCN cannot minimize the loss by memorizing
+individual pairs. The gap between training fit and test ranking is precisely
+the graph prior at work, and it also explains the slower convergence observed
+above.
+
 \subsection{Ablation: propagation depth, and a training-budget pitfall}
 \label{sec:ablation}
 
