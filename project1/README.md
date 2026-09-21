@@ -13,6 +13,7 @@ companion: every table and figure in the report is produced there.
 
 ```
 project1/
+├── DEVLOG.md               dated dev log (in Chinese, for teammates)
 ├── project1_report.ipynb   code-companion notebook (kept executed — open on
 │                           GitHub to see all outputs without running anything)
 ├── report/
