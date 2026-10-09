@@ -268,7 +268,26 @@ for ds, label in (("ml-1m", "MovieLens-1M"), ("vgames", "Video Games")):
         print(f"{label:14s} {proto} LightGCN vs MF (ndcg@10): {gain:+.1f}%")
 """))
 
-C.append(md("### 6.4 Case study (MovieLens-1M): one cold and one heavy user"))
+C.append(md("### 6.4 Extension: degree-α LightGCN (our method) on the sparse dataset\n\n"
+            "Motivated by 6.2: propagation concentrates mass on popular items. We "
+            "generalize LightGCN's message weight to `deg(s)^-α · deg(t)^-(1-α)` "
+            "(α=0.5 = original; `train.py --alpha`). Sweeping α reveals the debias "
+            "direction is α<0.5 — and α=0.3 improves accuracy, coverage and "
+            "popularity bias simultaneously (a Pareto improvement)."))
+C.append(code(r"""rows = []
+mf = load_result("vgames_mf_d64")
+rows.append({"model": "MF-BPR", **mf["test"], **mf["beyond_accuracy"]})
+for a in (0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8):
+    n = "vgames_lightgcn_d64_l3" + ("" if a == 0.5 else f"_a{a}")
+    r = load_result(n)
+    label = f"LightGCN α={a}" + (" (original)" if a == 0.5 else "")
+    rows.append({"model": label, **r["test"], **r["beyond_accuracy"]})
+ext = pd.DataFrame(rows).set_index("model")[
+    ["ndcg@10", "recall@20", "coverage@10", "mean_pop@10"]]
+display(ext.round(4))
+"""))
+
+C.append(md("### 6.5 Case study (MovieLens-1M): one cold and one heavy user"))
 C.append(code(r"""movies = pd.read_csv(ROOT.parent / "movielens-1m" / "movies.csv")
 z = np.load(DATA / "ml-1m.npz")
 n_users = int(z["n_users"])

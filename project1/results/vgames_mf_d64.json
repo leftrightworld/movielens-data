@@ -5,6 +5,7 @@
     "model": "mf",
     "dim": 64,
     "layers": 3,
+    "alpha": 0.5,
     "lr": 0.001,
     "reg": 0.0001,
     "batch": 8192,
@@ -16,7 +17,7 @@
     "save_emb": true
   },
   "device": "cuda",
-  "train_seconds": 241.7,
+  "train_seconds": 246.4,
   "best_epoch": 125,
   "valid": {
     "recall@10": 0.06216542022298536,
@@ -29,6 +30,10 @@
     "ndcg@10": 0.03440918224832614,
     "recall@20": 0.0968574738803308,
     "ndcg@20": 0.04307273318953492
+  },
+  "beyond_accuracy": {
+    "coverage@10": 62.06,
+    "mean_pop@10": 372.7
   },
   "history": [
     {

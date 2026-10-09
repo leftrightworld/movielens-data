@@ -125,6 +125,31 @@ with open(HERE / "tab_activity.tex", "w") as f:
     f.write(bucket_table() + "\n")
     f.write("\\bottomrule\n\\end{tabular}\n")
 
+# ---------- extension: degree-alpha sweep (sparse dataset) ----------
+def alpha_name(a):
+    return "vgames_lightgcn_d64_l3" if a == 0.5 else f"vgames_lightgcn_d64_l3_a{a}"
+
+try:
+    with open(HERE / "tab_alpha.tex", "w") as f:
+        f.write("\\begin{tabular}{lrrrr}\n\\toprule\n")
+        f.write("Model & N@10 & R@20 & Coverage@10 & Mean pop. \\\\\n\\midrule\n")
+        mf = res("vgames_mf_d64")
+        if "beyond_accuracy" in mf:
+            b = mf["beyond_accuracy"]
+            f.write(f"MF-BPR & {mf['test']['ndcg@10']:.4f} & {mf['test']['recall@20']:.4f} & "
+                    f"{b['coverage@10']:.1f}\\% & {b['mean_pop@10']:.0f} \\\\\n\\midrule\n")
+        for a in (0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8):
+            r = res(alpha_name(a))
+            b = r["beyond_accuracy"]
+            label = (f"LightGCN $\\alpha{{=}}{a}$" +
+                     (" (original)" if a == 0.5 else ""))
+            f.write(f"{label} & {r['test']['ndcg@10']:.4f} & {r['test']['recall@20']:.4f} & "
+                    f"{b['coverage@10']:.1f}\\% & {b['mean_pop@10']:.0f} \\\\\n")
+        f.write("\\bottomrule\n\\end{tabular}\n")
+    print("wrote tab_alpha")
+except FileNotFoundError as e:
+    print("tab_alpha skipped (missing run):", e)
+
 # ---------- popularity / coverage ----------
 with open(HERE / "tab_popularity.tex", "w") as f:
     f.write("\\begin{tabular}{llrr}\n\\toprule\n")

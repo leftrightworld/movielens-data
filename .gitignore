@@ -1,3 +1,4 @@
 project1/report/*.aux
 project1/report/*.log
 project1/report/*.out
+project1/results/*_a0*_emb.npz

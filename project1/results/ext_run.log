@@ -1,0 +1,369 @@
+/opt/pytorch/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[vgames_mf_d64] epoch   5 loss 0.5363 valid ndcg@10 0.0200 recall@20 0.0583 *
+[vgames_mf_d64] epoch  10 loss 0.2879 valid ndcg@10 0.0246 recall@20 0.0719 *
+[vgames_mf_d64] epoch  15 loss 0.1987 valid ndcg@10 0.0267 recall@20 0.0784 *
+[vgames_mf_d64] epoch  20 loss 0.1450 valid ndcg@10 0.0280 recall@20 0.0823 *
+[vgames_mf_d64] epoch  25 loss 0.1100 valid ndcg@10 0.0291 recall@20 0.0857 *
+[vgames_mf_d64] epoch  30 loss 0.0853 valid ndcg@10 0.0300 recall@20 0.0878 *
+[vgames_mf_d64] epoch  35 loss 0.0681 valid ndcg@10 0.0309 recall@20 0.0892 *
+[vgames_mf_d64] epoch  40 loss 0.0552 valid ndcg@10 0.0315 recall@20 0.0905 *
+[vgames_mf_d64] epoch  45 loss 0.0460 valid ndcg@10 0.0320 recall@20 0.0917 *
+[vgames_mf_d64] epoch  50 loss 0.0391 valid ndcg@10 0.0322 recall@20 0.0922 *
+[vgames_mf_d64] epoch  55 loss 0.0335 valid ndcg@10 0.0324 recall@20 0.0931 *
+[vgames_mf_d64] epoch  60 loss 0.0293 valid ndcg@10 0.0325 recall@20 0.0936 *
+[vgames_mf_d64] epoch  65 loss 0.0262 valid ndcg@10 0.0326 recall@20 0.0942 *
+[vgames_mf_d64] epoch  70 loss 0.0234 valid ndcg@10 0.0328 recall@20 0.0947 *
+[vgames_mf_d64] epoch  75 loss 0.0215 valid ndcg@10 0.0329 recall@20 0.0946 *
+[vgames_mf_d64] epoch  80 loss 0.0197 valid ndcg@10 0.0332 recall@20 0.0951 *
+[vgames_mf_d64] epoch  85 loss 0.0179 valid ndcg@10 0.0332 recall@20 0.0951
+[vgames_mf_d64] epoch  90 loss 0.0168 valid ndcg@10 0.0332 recall@20 0.0949 *
+[vgames_mf_d64] epoch  95 loss 0.0157 valid ndcg@10 0.0334 recall@20 0.0950 *
+[vgames_mf_d64] epoch 100 loss 0.0149 valid ndcg@10 0.0333 recall@20 0.0952
+[vgames_mf_d64] epoch 105 loss 0.0140 valid ndcg@10 0.0333 recall@20 0.0951
+[vgames_mf_d64] epoch 110 loss 0.0134 valid ndcg@10 0.0332 recall@20 0.0953
+[vgames_mf_d64] epoch 115 loss 0.0129 valid ndcg@10 0.0332 recall@20 0.0953
+[vgames_mf_d64] epoch 120 loss 0.0124 valid ndcg@10 0.0332 recall@20 0.0954
+[vgames_mf_d64] epoch 125 loss 0.0119 valid ndcg@10 0.0334 recall@20 0.0958 *
+[vgames_mf_d64] epoch 130 loss 0.0117 valid ndcg@10 0.0332 recall@20 0.0951
+[vgames_mf_d64] epoch 135 loss 0.0112 valid ndcg@10 0.0333 recall@20 0.0945
+[vgames_mf_d64] epoch 140 loss 0.0110 valid ndcg@10 0.0334 recall@20 0.0947
+[vgames_mf_d64] epoch 145 loss 0.0108 valid ndcg@10 0.0332 recall@20 0.0949
+[vgames_mf_d64] epoch 150 loss 0.0105 valid ndcg@10 0.0332 recall@20 0.0951
+[vgames_mf_d64] epoch 155 loss 0.0103 valid ndcg@10 0.0333 recall@20 0.0947
+[vgames_mf_d64] early stop at epoch 155
+[vgames_mf_d64] TEST {"recall@10": 0.0633717400023917, "ndcg@10": 0.03440918224832614, "recall@20": 0.0968574738803308, "ndcg@20": 0.04307273318953492} -> /home/ubuntu/movielens-data/project1/results/vgames_mf_d64.json
+/opt/pytorch/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[vgames_lightgcn_d64_l3] epoch   5 loss 0.4406 valid ndcg@10 0.0152 recall@20 0.0462 *
+[vgames_lightgcn_d64_l3] epoch  10 loss 0.2968 valid ndcg@10 0.0171 recall@20 0.0521 *
+[vgames_lightgcn_d64_l3] epoch  15 loss 0.2433 valid ndcg@10 0.0195 recall@20 0.0591 *
+[vgames_lightgcn_d64_l3] epoch  20 loss 0.2132 valid ndcg@10 0.0208 recall@20 0.0634 *
+[vgames_lightgcn_d64_l3] epoch  25 loss 0.1938 valid ndcg@10 0.0219 recall@20 0.0676 *
+[vgames_lightgcn_d64_l3] epoch  30 loss 0.1761 valid ndcg@10 0.0232 recall@20 0.0717 *
+[vgames_lightgcn_d64_l3] epoch  35 loss 0.1617 valid ndcg@10 0.0245 recall@20 0.0757 *
+[vgames_lightgcn_d64_l3] epoch  40 loss 0.1475 valid ndcg@10 0.0258 recall@20 0.0790 *
+[vgames_lightgcn_d64_l3] epoch  45 loss 0.1357 valid ndcg@10 0.0271 recall@20 0.0819 *
+[vgames_lightgcn_d64_l3] epoch  50 loss 0.1251 valid ndcg@10 0.0281 recall@20 0.0845 *
+[vgames_lightgcn_d64_l3] epoch  55 loss 0.1154 valid ndcg@10 0.0290 recall@20 0.0869 *
+[vgames_lightgcn_d64_l3] epoch  60 loss 0.1075 valid ndcg@10 0.0299 recall@20 0.0894 *
+[vgames_lightgcn_d64_l3] epoch  65 loss 0.1011 valid ndcg@10 0.0306 recall@20 0.0919 *
+[vgames_lightgcn_d64_l3] epoch  70 loss 0.0942 valid ndcg@10 0.0314 recall@20 0.0937 *
+[vgames_lightgcn_d64_l3] epoch  75 loss 0.0887 valid ndcg@10 0.0322 recall@20 0.0963 *
+[vgames_lightgcn_d64_l3] epoch  80 loss 0.0830 valid ndcg@10 0.0329 recall@20 0.0981 *
+[vgames_lightgcn_d64_l3] epoch  85 loss 0.0776 valid ndcg@10 0.0334 recall@20 0.1002 *
+[vgames_lightgcn_d64_l3] epoch  90 loss 0.0731 valid ndcg@10 0.0341 recall@20 0.1020 *
+[vgames_lightgcn_d64_l3] epoch  95 loss 0.0690 valid ndcg@10 0.0348 recall@20 0.1037 *
+[vgames_lightgcn_d64_l3] epoch 100 loss 0.0656 valid ndcg@10 0.0353 recall@20 0.1053 *
+[vgames_lightgcn_d64_l3] epoch 105 loss 0.0618 valid ndcg@10 0.0359 recall@20 0.1067 *
+[vgames_lightgcn_d64_l3] epoch 110 loss 0.0590 valid ndcg@10 0.0364 recall@20 0.1083 *
+[vgames_lightgcn_d64_l3] epoch 115 loss 0.0567 valid ndcg@10 0.0370 recall@20 0.1093 *
+[vgames_lightgcn_d64_l3] epoch 120 loss 0.0547 valid ndcg@10 0.0375 recall@20 0.1103 *
+[vgames_lightgcn_d64_l3] epoch 125 loss 0.0518 valid ndcg@10 0.0380 recall@20 0.1115 *
+[vgames_lightgcn_d64_l3] epoch 130 loss 0.0494 valid ndcg@10 0.0383 recall@20 0.1130 *
+[vgames_lightgcn_d64_l3] epoch 135 loss 0.0472 valid ndcg@10 0.0388 recall@20 0.1142 *
+[vgames_lightgcn_d64_l3] epoch 140 loss 0.0455 valid ndcg@10 0.0392 recall@20 0.1151 *
+[vgames_lightgcn_d64_l3] epoch 145 loss 0.0443 valid ndcg@10 0.0395 recall@20 0.1162 *
+[vgames_lightgcn_d64_l3] epoch 150 loss 0.0421 valid ndcg@10 0.0400 recall@20 0.1169 *
+[vgames_lightgcn_d64_l3] epoch 155 loss 0.0411 valid ndcg@10 0.0402 recall@20 0.1178 *
+[vgames_lightgcn_d64_l3] epoch 160 loss 0.0394 valid ndcg@10 0.0406 recall@20 0.1186 *
+[vgames_lightgcn_d64_l3] epoch 165 loss 0.0381 valid ndcg@10 0.0410 recall@20 0.1196 *
+[vgames_lightgcn_d64_l3] epoch 170 loss 0.0367 valid ndcg@10 0.0413 recall@20 0.1199 *
+[vgames_lightgcn_d64_l3] epoch 175 loss 0.0358 valid ndcg@10 0.0417 recall@20 0.1210 *
+[vgames_lightgcn_d64_l3] epoch 180 loss 0.0344 valid ndcg@10 0.0419 recall@20 0.1216 *
+[vgames_lightgcn_d64_l3] epoch 185 loss 0.0338 valid ndcg@10 0.0422 recall@20 0.1220 *
+[vgames_lightgcn_d64_l3] epoch 190 loss 0.0330 valid ndcg@10 0.0425 recall@20 0.1230 *
+[vgames_lightgcn_d64_l3] epoch 195 loss 0.0320 valid ndcg@10 0.0427 recall@20 0.1235 *
+[vgames_lightgcn_d64_l3] epoch 200 loss 0.0310 valid ndcg@10 0.0429 recall@20 0.1240 *
+[vgames_lightgcn_d64_l3] epoch 205 loss 0.0304 valid ndcg@10 0.0431 recall@20 0.1244 *
+[vgames_lightgcn_d64_l3] epoch 210 loss 0.0298 valid ndcg@10 0.0434 recall@20 0.1250 *
+[vgames_lightgcn_d64_l3] epoch 215 loss 0.0289 valid ndcg@10 0.0437 recall@20 0.1257 *
+[vgames_lightgcn_d64_l3] epoch 220 loss 0.0283 valid ndcg@10 0.0439 recall@20 0.1259 *
+[vgames_lightgcn_d64_l3] epoch 225 loss 0.0279 valid ndcg@10 0.0441 recall@20 0.1265 *
+[vgames_lightgcn_d64_l3] epoch 230 loss 0.0269 valid ndcg@10 0.0443 recall@20 0.1268 *
+[vgames_lightgcn_d64_l3] epoch 235 loss 0.0263 valid ndcg@10 0.0444 recall@20 0.1271 *
+[vgames_lightgcn_d64_l3] epoch 240 loss 0.0258 valid ndcg@10 0.0446 recall@20 0.1276 *
+[vgames_lightgcn_d64_l3] epoch 245 loss 0.0254 valid ndcg@10 0.0448 recall@20 0.1282 *
+[vgames_lightgcn_d64_l3] epoch 250 loss 0.0250 valid ndcg@10 0.0450 recall@20 0.1286 *
+[vgames_lightgcn_d64_l3] epoch 255 loss 0.0245 valid ndcg@10 0.0452 recall@20 0.1288 *
+[vgames_lightgcn_d64_l3] epoch 260 loss 0.0240 valid ndcg@10 0.0452 recall@20 0.1293 *
+[vgames_lightgcn_d64_l3] epoch 265 loss 0.0235 valid ndcg@10 0.0455 recall@20 0.1299 *
+[vgames_lightgcn_d64_l3] epoch 270 loss 0.0232 valid ndcg@10 0.0456 recall@20 0.1303 *
+[vgames_lightgcn_d64_l3] epoch 275 loss 0.0226 valid ndcg@10 0.0456 recall@20 0.1306 *
+[vgames_lightgcn_d64_l3] epoch 280 loss 0.0227 valid ndcg@10 0.0459 recall@20 0.1310 *
+[vgames_lightgcn_d64_l3] epoch 285 loss 0.0223 valid ndcg@10 0.0460 recall@20 0.1313 *
+[vgames_lightgcn_d64_l3] epoch 290 loss 0.0221 valid ndcg@10 0.0460 recall@20 0.1319 *
+[vgames_lightgcn_d64_l3] epoch 295 loss 0.0215 valid ndcg@10 0.0462 recall@20 0.1315 *
+[vgames_lightgcn_d64_l3] epoch 300 loss 0.0216 valid ndcg@10 0.0463 recall@20 0.1321 *
+[vgames_lightgcn_d64_l3] epoch 305 loss 0.0209 valid ndcg@10 0.0464 recall@20 0.1321 *
+[vgames_lightgcn_d64_l3] epoch 310 loss 0.0209 valid ndcg@10 0.0464 recall@20 0.1325 *
+[vgames_lightgcn_d64_l3] epoch 315 loss 0.0204 valid ndcg@10 0.0464 recall@20 0.1325 *
+[vgames_lightgcn_d64_l3] epoch 320 loss 0.0203 valid ndcg@10 0.0467 recall@20 0.1325 *
+[vgames_lightgcn_d64_l3] epoch 325 loss 0.0200 valid ndcg@10 0.0467 recall@20 0.1327
+[vgames_lightgcn_d64_l3] epoch 330 loss 0.0199 valid ndcg@10 0.0467 recall@20 0.1332 *
+[vgames_lightgcn_d64_l3] epoch 335 loss 0.0195 valid ndcg@10 0.0468 recall@20 0.1333 *
+[vgames_lightgcn_d64_l3] epoch 340 loss 0.0197 valid ndcg@10 0.0469 recall@20 0.1336 *
+[vgames_lightgcn_d64_l3] epoch 345 loss 0.0194 valid ndcg@10 0.0469 recall@20 0.1335
+[vgames_lightgcn_d64_l3] epoch 350 loss 0.0193 valid ndcg@10 0.0471 recall@20 0.1339 *
+[vgames_lightgcn_d64_l3] epoch 355 loss 0.0187 valid ndcg@10 0.0471 recall@20 0.1339
+[vgames_lightgcn_d64_l3] epoch 360 loss 0.0186 valid ndcg@10 0.0471 recall@20 0.1336
+[vgames_lightgcn_d64_l3] epoch 365 loss 0.0186 valid ndcg@10 0.0472 recall@20 0.1340 *
+[vgames_lightgcn_d64_l3] epoch 370 loss 0.0183 valid ndcg@10 0.0472 recall@20 0.1343 *
+[vgames_lightgcn_d64_l3] epoch 375 loss 0.0180 valid ndcg@10 0.0473 recall@20 0.1342 *
+[vgames_lightgcn_d64_l3] epoch 380 loss 0.0177 valid ndcg@10 0.0473 recall@20 0.1344 *
+[vgames_lightgcn_d64_l3] epoch 385 loss 0.0180 valid ndcg@10 0.0473 recall@20 0.1341 *
+[vgames_lightgcn_d64_l3] epoch 390 loss 0.0176 valid ndcg@10 0.0474 recall@20 0.1343 *
+[vgames_lightgcn_d64_l3] epoch 395 loss 0.0177 valid ndcg@10 0.0475 recall@20 0.1345 *
+[vgames_lightgcn_d64_l3] epoch 400 loss 0.0172 valid ndcg@10 0.0475 recall@20 0.1347
+[vgames_lightgcn_d64_l3] epoch 405 loss 0.0173 valid ndcg@10 0.0477 recall@20 0.1350 *
+[vgames_lightgcn_d64_l3] epoch 410 loss 0.0171 valid ndcg@10 0.0477 recall@20 0.1349 *
+[vgames_lightgcn_d64_l3] epoch 415 loss 0.0171 valid ndcg@10 0.0476 recall@20 0.1347
+[vgames_lightgcn_d64_l3] epoch 420 loss 0.0167 valid ndcg@10 0.0476 recall@20 0.1347
+[vgames_lightgcn_d64_l3] epoch 425 loss 0.0169 valid ndcg@10 0.0478 recall@20 0.1351 *
+[vgames_lightgcn_d64_l3] epoch 430 loss 0.0165 valid ndcg@10 0.0477 recall@20 0.1350
+[vgames_lightgcn_d64_l3] epoch 435 loss 0.0165 valid ndcg@10 0.0478 recall@20 0.1350
+[vgames_lightgcn_d64_l3] epoch 440 loss 0.0165 valid ndcg@10 0.0478 recall@20 0.1354 *
+[vgames_lightgcn_d64_l3] epoch 445 loss 0.0162 valid ndcg@10 0.0479 recall@20 0.1353 *
+[vgames_lightgcn_d64_l3] epoch 450 loss 0.0161 valid ndcg@10 0.0480 recall@20 0.1352 *
+[vgames_lightgcn_d64_l3] epoch 455 loss 0.0162 valid ndcg@10 0.0479 recall@20 0.1354
+[vgames_lightgcn_d64_l3] epoch 460 loss 0.0157 valid ndcg@10 0.0480 recall@20 0.1353
+[vgames_lightgcn_d64_l3] epoch 465 loss 0.0159 valid ndcg@10 0.0481 recall@20 0.1352 *
+[vgames_lightgcn_d64_l3] epoch 470 loss 0.0156 valid ndcg@10 0.0479 recall@20 0.1353
+[vgames_lightgcn_d64_l3] epoch 475 loss 0.0158 valid ndcg@10 0.0480 recall@20 0.1350
+[vgames_lightgcn_d64_l3] epoch 480 loss 0.0155 valid ndcg@10 0.0480 recall@20 0.1354
+[vgames_lightgcn_d64_l3] epoch 485 loss 0.0155 valid ndcg@10 0.0481 recall@20 0.1358 *
+[vgames_lightgcn_d64_l3] epoch 490 loss 0.0155 valid ndcg@10 0.0481 recall@20 0.1357
+[vgames_lightgcn_d64_l3] epoch 495 loss 0.0154 valid ndcg@10 0.0482 recall@20 0.1360 *
+[vgames_lightgcn_d64_l3] epoch 500 loss 0.0152 valid ndcg@10 0.0482 recall@20 0.1357 *
+[vgames_lightgcn_d64_l3] epoch 505 loss 0.0151 valid ndcg@10 0.0482 recall@20 0.1356
+[vgames_lightgcn_d64_l3] epoch 510 loss 0.0149 valid ndcg@10 0.0482 recall@20 0.1356
+[vgames_lightgcn_d64_l3] epoch 515 loss 0.0148 valid ndcg@10 0.0483 recall@20 0.1357 *
+[vgames_lightgcn_d64_l3] epoch 520 loss 0.0149 valid ndcg@10 0.0483 recall@20 0.1358
+[vgames_lightgcn_d64_l3] epoch 525 loss 0.0149 valid ndcg@10 0.0483 recall@20 0.1357 *
+[vgames_lightgcn_d64_l3] epoch 530 loss 0.0149 valid ndcg@10 0.0482 recall@20 0.1359
+[vgames_lightgcn_d64_l3] epoch 535 loss 0.0146 valid ndcg@10 0.0484 recall@20 0.1355 *
+[vgames_lightgcn_d64_l3] epoch 540 loss 0.0146 valid ndcg@10 0.0484 recall@20 0.1358 *
+[vgames_lightgcn_d64_l3] epoch 545 loss 0.0146 valid ndcg@10 0.0484 recall@20 0.1358 *
+[vgames_lightgcn_d64_l3] epoch 550 loss 0.0144 valid ndcg@10 0.0484 recall@20 0.1356 *
+[vgames_lightgcn_d64_l3] epoch 555 loss 0.0144 valid ndcg@10 0.0485 recall@20 0.1355 *
+[vgames_lightgcn_d64_l3] epoch 560 loss 0.0142 valid ndcg@10 0.0485 recall@20 0.1356 *
+[vgames_lightgcn_d64_l3] epoch 565 loss 0.0142 valid ndcg@10 0.0485 recall@20 0.1357 *
+[vgames_lightgcn_d64_l3] epoch 570 loss 0.0142 valid ndcg@10 0.0485 recall@20 0.1358
+[vgames_lightgcn_d64_l3] epoch 575 loss 0.0142 valid ndcg@10 0.0484 recall@20 0.1358
+[vgames_lightgcn_d64_l3] epoch 580 loss 0.0141 valid ndcg@10 0.0485 recall@20 0.1356
+[vgames_lightgcn_d64_l3] epoch 585 loss 0.0140 valid ndcg@10 0.0484 recall@20 0.1357
+[vgames_lightgcn_d64_l3] epoch 590 loss 0.0141 valid ndcg@10 0.0484 recall@20 0.1353
+[vgames_lightgcn_d64_l3] epoch 595 loss 0.0138 valid ndcg@10 0.0484 recall@20 0.1356
+[vgames_lightgcn_d64_l3] early stop at epoch 595
+[vgames_lightgcn_d64_l3] TEST {"recall@10": 0.09073902215380002, "ndcg@10": 0.049384781383424954, "recall@20": 0.1349064740755483, "ndcg@20": 0.060818065425796465} -> /home/ubuntu/movielens-data/project1/results/vgames_lightgcn_d64_l3.json
+/opt/pytorch/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[vgames_lightgcn_d64_l3_a0.6] epoch   5 loss 0.4145 valid ndcg@10 0.0150 recall@20 0.0464 *
+[vgames_lightgcn_d64_l3_a0.6] epoch  10 loss 0.3131 valid ndcg@10 0.0173 recall@20 0.0523 *
+[vgames_lightgcn_d64_l3_a0.6] epoch  15 loss 0.2610 valid ndcg@10 0.0190 recall@20 0.0577 *
+[vgames_lightgcn_d64_l3_a0.6] epoch  20 loss 0.2325 valid ndcg@10 0.0201 recall@20 0.0616 *
+[vgames_lightgcn_d64_l3_a0.6] epoch  25 loss 0.2127 valid ndcg@10 0.0211 recall@20 0.0649 *
+[vgames_lightgcn_d64_l3_a0.6] epoch  30 loss 0.1935 valid ndcg@10 0.0224 recall@20 0.0694 *
+[vgames_lightgcn_d64_l3_a0.6] epoch  35 loss 0.1780 valid ndcg@10 0.0238 recall@20 0.0733 *
+[vgames_lightgcn_d64_l3_a0.6] epoch  40 loss 0.1627 valid ndcg@10 0.0249 recall@20 0.0762 *
+[vgames_lightgcn_d64_l3_a0.6] epoch  45 loss 0.1501 valid ndcg@10 0.0260 recall@20 0.0792 *
+[vgames_lightgcn_d64_l3_a0.6] epoch  50 loss 0.1386 valid ndcg@10 0.0270 recall@20 0.0817 *
+[vgames_lightgcn_d64_l3_a0.6] epoch  55 loss 0.1278 valid ndcg@10 0.0279 recall@20 0.0841 *
+[vgames_lightgcn_d64_l3_a0.6] epoch  60 loss 0.1189 valid ndcg@10 0.0287 recall@20 0.0865 *
+[vgames_lightgcn_d64_l3_a0.6] epoch  65 loss 0.1117 valid ndcg@10 0.0296 recall@20 0.0888 *
+[vgames_lightgcn_d64_l3_a0.6] epoch  70 loss 0.1038 valid ndcg@10 0.0305 recall@20 0.0913 *
+[vgames_lightgcn_d64_l3_a0.6] epoch  75 loss 0.0973 valid ndcg@10 0.0312 recall@20 0.0936 *
+[vgames_lightgcn_d64_l3_a0.6] epoch  80 loss 0.0905 valid ndcg@10 0.0320 recall@20 0.0958 *
+[vgames_lightgcn_d64_l3_a0.6] epoch  85 loss 0.0842 valid ndcg@10 0.0326 recall@20 0.0977 *
+[vgames_lightgcn_d64_l3_a0.6] epoch  90 loss 0.0789 valid ndcg@10 0.0332 recall@20 0.0996 *
+[vgames_lightgcn_d64_l3_a0.6] epoch  95 loss 0.0740 valid ndcg@10 0.0339 recall@20 0.1014 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 100 loss 0.0699 valid ndcg@10 0.0344 recall@20 0.1038 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 105 loss 0.0655 valid ndcg@10 0.0350 recall@20 0.1050 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 110 loss 0.0623 valid ndcg@10 0.0356 recall@20 0.1067 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 115 loss 0.0594 valid ndcg@10 0.0361 recall@20 0.1078 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 120 loss 0.0571 valid ndcg@10 0.0368 recall@20 0.1091 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 125 loss 0.0537 valid ndcg@10 0.0372 recall@20 0.1106 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 130 loss 0.0510 valid ndcg@10 0.0376 recall@20 0.1120 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 135 loss 0.0484 valid ndcg@10 0.0380 recall@20 0.1133 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 140 loss 0.0464 valid ndcg@10 0.0385 recall@20 0.1143 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 145 loss 0.0451 valid ndcg@10 0.0390 recall@20 0.1157 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 150 loss 0.0425 valid ndcg@10 0.0395 recall@20 0.1167 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 155 loss 0.0413 valid ndcg@10 0.0400 recall@20 0.1172 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 160 loss 0.0396 valid ndcg@10 0.0404 recall@20 0.1184 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 165 loss 0.0381 valid ndcg@10 0.0408 recall@20 0.1193 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 170 loss 0.0366 valid ndcg@10 0.0411 recall@20 0.1201 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 175 loss 0.0356 valid ndcg@10 0.0416 recall@20 0.1208 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 180 loss 0.0341 valid ndcg@10 0.0418 recall@20 0.1213 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 185 loss 0.0335 valid ndcg@10 0.0421 recall@20 0.1221 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 190 loss 0.0326 valid ndcg@10 0.0424 recall@20 0.1231 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 195 loss 0.0315 valid ndcg@10 0.0425 recall@20 0.1235 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 200 loss 0.0306 valid ndcg@10 0.0428 recall@20 0.1238 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 205 loss 0.0298 valid ndcg@10 0.0430 recall@20 0.1247 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 210 loss 0.0292 valid ndcg@10 0.0432 recall@20 0.1250 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 215 loss 0.0283 valid ndcg@10 0.0435 recall@20 0.1254 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 220 loss 0.0276 valid ndcg@10 0.0438 recall@20 0.1257 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 225 loss 0.0273 valid ndcg@10 0.0440 recall@20 0.1263 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 230 loss 0.0261 valid ndcg@10 0.0442 recall@20 0.1268 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 235 loss 0.0256 valid ndcg@10 0.0442 recall@20 0.1273 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 240 loss 0.0251 valid ndcg@10 0.0444 recall@20 0.1274 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 245 loss 0.0247 valid ndcg@10 0.0445 recall@20 0.1275 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 250 loss 0.0242 valid ndcg@10 0.0447 recall@20 0.1280 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 255 loss 0.0237 valid ndcg@10 0.0449 recall@20 0.1283 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 260 loss 0.0232 valid ndcg@10 0.0449 recall@20 0.1286
+[vgames_lightgcn_d64_l3_a0.6] epoch 265 loss 0.0228 valid ndcg@10 0.0451 recall@20 0.1289 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 270 loss 0.0225 valid ndcg@10 0.0452 recall@20 0.1293 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 275 loss 0.0219 valid ndcg@10 0.0453 recall@20 0.1290 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 280 loss 0.0219 valid ndcg@10 0.0453 recall@20 0.1293 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 285 loss 0.0215 valid ndcg@10 0.0454 recall@20 0.1294 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 290 loss 0.0214 valid ndcg@10 0.0454 recall@20 0.1297 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 295 loss 0.0208 valid ndcg@10 0.0455 recall@20 0.1302 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 300 loss 0.0208 valid ndcg@10 0.0455 recall@20 0.1303 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 305 loss 0.0201 valid ndcg@10 0.0456 recall@20 0.1299 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 310 loss 0.0201 valid ndcg@10 0.0457 recall@20 0.1301 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 315 loss 0.0197 valid ndcg@10 0.0457 recall@20 0.1302
+[vgames_lightgcn_d64_l3_a0.6] epoch 320 loss 0.0195 valid ndcg@10 0.0459 recall@20 0.1305 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 325 loss 0.0193 valid ndcg@10 0.0459 recall@20 0.1304 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 330 loss 0.0191 valid ndcg@10 0.0459 recall@20 0.1308
+[vgames_lightgcn_d64_l3_a0.6] epoch 335 loss 0.0188 valid ndcg@10 0.0461 recall@20 0.1309 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 340 loss 0.0190 valid ndcg@10 0.0461 recall@20 0.1311 *
+[vgames_lightgcn_d64_l3_a0.6] epoch 345 loss 0.0187 valid ndcg@10 0.0460 recall@20 0.1312
+[vgames_lightgcn_d64_l3_a0.6] epoch 350 loss 0.0186 valid ndcg@10 0.0460 recall@20 0.1313
+[vgames_lightgcn_d64_l3_a0.6] epoch 355 loss 0.0180 valid ndcg@10 0.0460 recall@20 0.1312
+[vgames_lightgcn_d64_l3_a0.6] epoch 360 loss 0.0180 valid ndcg@10 0.0459 recall@20 0.1310
+[vgames_lightgcn_d64_l3_a0.6] epoch 365 loss 0.0179 valid ndcg@10 0.0459 recall@20 0.1313
+[vgames_lightgcn_d64_l3_a0.6] epoch 370 loss 0.0177 valid ndcg@10 0.0460 recall@20 0.1313
+[vgames_lightgcn_d64_l3_a0.6] early stop at epoch 370
+[vgames_lightgcn_d64_l3_a0.6] TEST {"recall@10": 0.08670229381248512, "ndcg@10": 0.04679821567971026, "recall@20": 0.13071317565355187, "ndcg@20": 0.05816192414204154} -> /home/ubuntu/movielens-data/project1/results/vgames_lightgcn_d64_l3_a0.6.json
+/opt/pytorch/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[vgames_lightgcn_d64_l3_a0.7] epoch   5 loss 0.4127 valid ndcg@10 0.0146 recall@20 0.0450 *
+[vgames_lightgcn_d64_l3_a0.7] epoch  10 loss 0.3440 valid ndcg@10 0.0168 recall@20 0.0509 *
+[vgames_lightgcn_d64_l3_a0.7] epoch  15 loss 0.2883 valid ndcg@10 0.0184 recall@20 0.0548 *
+[vgames_lightgcn_d64_l3_a0.7] epoch  20 loss 0.2587 valid ndcg@10 0.0191 recall@20 0.0582 *
+[vgames_lightgcn_d64_l3_a0.7] epoch  25 loss 0.2390 valid ndcg@10 0.0200 recall@20 0.0614 *
+[vgames_lightgcn_d64_l3_a0.7] epoch  30 loss 0.2182 valid ndcg@10 0.0212 recall@20 0.0656 *
+[vgames_lightgcn_d64_l3_a0.7] epoch  35 loss 0.1999 valid ndcg@10 0.0227 recall@20 0.0700 *
+[vgames_lightgcn_d64_l3_a0.7] epoch  40 loss 0.1817 valid ndcg@10 0.0240 recall@20 0.0735 *
+[vgames_lightgcn_d64_l3_a0.7] epoch  45 loss 0.1670 valid ndcg@10 0.0252 recall@20 0.0764 *
+[vgames_lightgcn_d64_l3_a0.7] epoch  50 loss 0.1537 valid ndcg@10 0.0263 recall@20 0.0796 *
+[vgames_lightgcn_d64_l3_a0.7] epoch  55 loss 0.1412 valid ndcg@10 0.0271 recall@20 0.0820 *
+[vgames_lightgcn_d64_l3_a0.7] epoch  60 loss 0.1309 valid ndcg@10 0.0282 recall@20 0.0838 *
+[vgames_lightgcn_d64_l3_a0.7] epoch  65 loss 0.1227 valid ndcg@10 0.0292 recall@20 0.0867 *
+[vgames_lightgcn_d64_l3_a0.7] epoch  70 loss 0.1138 valid ndcg@10 0.0300 recall@20 0.0891 *
+[vgames_lightgcn_d64_l3_a0.7] epoch  75 loss 0.1063 valid ndcg@10 0.0307 recall@20 0.0914 *
+[vgames_lightgcn_d64_l3_a0.7] epoch  80 loss 0.0986 valid ndcg@10 0.0315 recall@20 0.0937 *
+[vgames_lightgcn_d64_l3_a0.7] epoch  85 loss 0.0913 valid ndcg@10 0.0321 recall@20 0.0954 *
+[vgames_lightgcn_d64_l3_a0.7] epoch  90 loss 0.0853 valid ndcg@10 0.0327 recall@20 0.0975 *
+[vgames_lightgcn_d64_l3_a0.7] epoch  95 loss 0.0796 valid ndcg@10 0.0334 recall@20 0.0998 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 100 loss 0.0749 valid ndcg@10 0.0341 recall@20 0.1018 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 105 loss 0.0699 valid ndcg@10 0.0348 recall@20 0.1034 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 110 loss 0.0663 valid ndcg@10 0.0355 recall@20 0.1051 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 115 loss 0.0628 valid ndcg@10 0.0360 recall@20 0.1064 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 120 loss 0.0603 valid ndcg@10 0.0366 recall@20 0.1074 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 125 loss 0.0566 valid ndcg@10 0.0371 recall@20 0.1089 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 130 loss 0.0536 valid ndcg@10 0.0375 recall@20 0.1104 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 135 loss 0.0505 valid ndcg@10 0.0379 recall@20 0.1114 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 140 loss 0.0484 valid ndcg@10 0.0384 recall@20 0.1125 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 145 loss 0.0469 valid ndcg@10 0.0388 recall@20 0.1133 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 150 loss 0.0442 valid ndcg@10 0.0392 recall@20 0.1140 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 155 loss 0.0428 valid ndcg@10 0.0397 recall@20 0.1151 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 160 loss 0.0410 valid ndcg@10 0.0399 recall@20 0.1159 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 165 loss 0.0393 valid ndcg@10 0.0403 recall@20 0.1166 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 170 loss 0.0376 valid ndcg@10 0.0406 recall@20 0.1176 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 175 loss 0.0367 valid ndcg@10 0.0409 recall@20 0.1184 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 180 loss 0.0349 valid ndcg@10 0.0411 recall@20 0.1191 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 185 loss 0.0344 valid ndcg@10 0.0413 recall@20 0.1201 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 190 loss 0.0335 valid ndcg@10 0.0415 recall@20 0.1202 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 195 loss 0.0322 valid ndcg@10 0.0417 recall@20 0.1204 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 200 loss 0.0312 valid ndcg@10 0.0418 recall@20 0.1208 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 205 loss 0.0305 valid ndcg@10 0.0420 recall@20 0.1214 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 210 loss 0.0299 valid ndcg@10 0.0422 recall@20 0.1219 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 215 loss 0.0289 valid ndcg@10 0.0423 recall@20 0.1219 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 220 loss 0.0280 valid ndcg@10 0.0424 recall@20 0.1224 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 225 loss 0.0279 valid ndcg@10 0.0425 recall@20 0.1229 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 230 loss 0.0266 valid ndcg@10 0.0426 recall@20 0.1230 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 235 loss 0.0260 valid ndcg@10 0.0426 recall@20 0.1229 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 240 loss 0.0255 valid ndcg@10 0.0428 recall@20 0.1232 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 245 loss 0.0251 valid ndcg@10 0.0428 recall@20 0.1238 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 250 loss 0.0246 valid ndcg@10 0.0430 recall@20 0.1236 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 255 loss 0.0239 valid ndcg@10 0.0431 recall@20 0.1238 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 260 loss 0.0233 valid ndcg@10 0.0431 recall@20 0.1236 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 265 loss 0.0230 valid ndcg@10 0.0431 recall@20 0.1238 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 270 loss 0.0228 valid ndcg@10 0.0432 recall@20 0.1242 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 275 loss 0.0222 valid ndcg@10 0.0431 recall@20 0.1241
+[vgames_lightgcn_d64_l3_a0.7] epoch 280 loss 0.0220 valid ndcg@10 0.0433 recall@20 0.1242 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 285 loss 0.0215 valid ndcg@10 0.0433 recall@20 0.1247 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 290 loss 0.0215 valid ndcg@10 0.0433 recall@20 0.1243
+[vgames_lightgcn_d64_l3_a0.7] epoch 295 loss 0.0209 valid ndcg@10 0.0433 recall@20 0.1245 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 300 loss 0.0209 valid ndcg@10 0.0434 recall@20 0.1248 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 305 loss 0.0201 valid ndcg@10 0.0435 recall@20 0.1244 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 310 loss 0.0202 valid ndcg@10 0.0435 recall@20 0.1244 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 315 loss 0.0197 valid ndcg@10 0.0435 recall@20 0.1245
+[vgames_lightgcn_d64_l3_a0.7] epoch 320 loss 0.0196 valid ndcg@10 0.0435 recall@20 0.1243
+[vgames_lightgcn_d64_l3_a0.7] epoch 325 loss 0.0195 valid ndcg@10 0.0434 recall@20 0.1241
+[vgames_lightgcn_d64_l3_a0.7] epoch 330 loss 0.0191 valid ndcg@10 0.0434 recall@20 0.1241
+[vgames_lightgcn_d64_l3_a0.7] epoch 335 loss 0.0188 valid ndcg@10 0.0436 recall@20 0.1240 *
+[vgames_lightgcn_d64_l3_a0.7] epoch 340 loss 0.0189 valid ndcg@10 0.0435 recall@20 0.1244
+[vgames_lightgcn_d64_l3_a0.7] epoch 345 loss 0.0187 valid ndcg@10 0.0434 recall@20 0.1244
+[vgames_lightgcn_d64_l3_a0.7] epoch 350 loss 0.0186 valid ndcg@10 0.0433 recall@20 0.1244
+[vgames_lightgcn_d64_l3_a0.7] epoch 355 loss 0.0179 valid ndcg@10 0.0433 recall@20 0.1240
+[vgames_lightgcn_d64_l3_a0.7] epoch 360 loss 0.0180 valid ndcg@10 0.0433 recall@20 0.1239
+[vgames_lightgcn_d64_l3_a0.7] epoch 365 loss 0.0178 valid ndcg@10 0.0431 recall@20 0.1239
+[vgames_lightgcn_d64_l3_a0.7] early stop at epoch 365
+[vgames_lightgcn_d64_l3_a0.7] TEST {"recall@10": 0.08197548184782305, "ndcg@10": 0.04414039732171696, "recall@20": 0.12455313307235916, "ndcg@20": 0.05516444991659384} -> /home/ubuntu/movielens-data/project1/results/vgames_lightgcn_d64_l3_a0.7.json
+/opt/pytorch/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[vgames_lightgcn_d64_l3_a0.8] epoch   5 loss 0.4249 valid ndcg@10 0.0146 recall@20 0.0444 *
+[vgames_lightgcn_d64_l3_a0.8] epoch  10 loss 0.3598 valid ndcg@10 0.0170 recall@20 0.0508 *
+[vgames_lightgcn_d64_l3_a0.8] epoch  15 loss 0.3052 valid ndcg@10 0.0185 recall@20 0.0552 *
+[vgames_lightgcn_d64_l3_a0.8] epoch  20 loss 0.2753 valid ndcg@10 0.0194 recall@20 0.0587 *
+[vgames_lightgcn_d64_l3_a0.8] epoch  25 loss 0.2537 valid ndcg@10 0.0204 recall@20 0.0620 *
+[vgames_lightgcn_d64_l3_a0.8] epoch  30 loss 0.2310 valid ndcg@10 0.0218 recall@20 0.0668 *
+[vgames_lightgcn_d64_l3_a0.8] epoch  35 loss 0.2117 valid ndcg@10 0.0231 recall@20 0.0709 *
+[vgames_lightgcn_d64_l3_a0.8] epoch  40 loss 0.1930 valid ndcg@10 0.0245 recall@20 0.0743 *
+[vgames_lightgcn_d64_l3_a0.8] epoch  45 loss 0.1773 valid ndcg@10 0.0258 recall@20 0.0784 *
+[vgames_lightgcn_d64_l3_a0.8] epoch  50 loss 0.1631 valid ndcg@10 0.0270 recall@20 0.0810 *
+[vgames_lightgcn_d64_l3_a0.8] epoch  55 loss 0.1494 valid ndcg@10 0.0280 recall@20 0.0836 *
+[vgames_lightgcn_d64_l3_a0.8] epoch  60 loss 0.1380 valid ndcg@10 0.0290 recall@20 0.0859 *
+[vgames_lightgcn_d64_l3_a0.8] epoch  65 loss 0.1291 valid ndcg@10 0.0301 recall@20 0.0886 *
+[vgames_lightgcn_d64_l3_a0.8] epoch  70 loss 0.1195 valid ndcg@10 0.0310 recall@20 0.0911 *
+[vgames_lightgcn_d64_l3_a0.8] epoch  75 loss 0.1113 valid ndcg@10 0.0318 recall@20 0.0940 *
+[vgames_lightgcn_d64_l3_a0.8] epoch  80 loss 0.1030 valid ndcg@10 0.0327 recall@20 0.0967 *
+[vgames_lightgcn_d64_l3_a0.8] epoch  85 loss 0.0948 valid ndcg@10 0.0334 recall@20 0.0985 *
+[vgames_lightgcn_d64_l3_a0.8] epoch  90 loss 0.0885 valid ndcg@10 0.0340 recall@20 0.1009 *
+[vgames_lightgcn_d64_l3_a0.8] epoch  95 loss 0.0825 valid ndcg@10 0.0347 recall@20 0.1023 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 100 loss 0.0774 valid ndcg@10 0.0353 recall@20 0.1038 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 105 loss 0.0721 valid ndcg@10 0.0359 recall@20 0.1054 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 110 loss 0.0683 valid ndcg@10 0.0365 recall@20 0.1067 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 115 loss 0.0645 valid ndcg@10 0.0371 recall@20 0.1079 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 120 loss 0.0618 valid ndcg@10 0.0375 recall@20 0.1092 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 125 loss 0.0581 valid ndcg@10 0.0379 recall@20 0.1105 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 130 loss 0.0551 valid ndcg@10 0.0383 recall@20 0.1116 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 135 loss 0.0517 valid ndcg@10 0.0387 recall@20 0.1122 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 140 loss 0.0495 valid ndcg@10 0.0391 recall@20 0.1129 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 145 loss 0.0481 valid ndcg@10 0.0394 recall@20 0.1137 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 150 loss 0.0453 valid ndcg@10 0.0395 recall@20 0.1143 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 155 loss 0.0437 valid ndcg@10 0.0398 recall@20 0.1150 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 160 loss 0.0420 valid ndcg@10 0.0402 recall@20 0.1157 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 165 loss 0.0401 valid ndcg@10 0.0404 recall@20 0.1163 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 170 loss 0.0383 valid ndcg@10 0.0406 recall@20 0.1170 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 175 loss 0.0376 valid ndcg@10 0.0408 recall@20 0.1173 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 180 loss 0.0356 valid ndcg@10 0.0409 recall@20 0.1177 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 185 loss 0.0350 valid ndcg@10 0.0409 recall@20 0.1180 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 190 loss 0.0340 valid ndcg@10 0.0411 recall@20 0.1188 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 195 loss 0.0327 valid ndcg@10 0.0412 recall@20 0.1190 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 200 loss 0.0317 valid ndcg@10 0.0414 recall@20 0.1194 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 205 loss 0.0310 valid ndcg@10 0.0416 recall@20 0.1194 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 210 loss 0.0303 valid ndcg@10 0.0417 recall@20 0.1193 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 215 loss 0.0292 valid ndcg@10 0.0418 recall@20 0.1197 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 220 loss 0.0282 valid ndcg@10 0.0417 recall@20 0.1195
+[vgames_lightgcn_d64_l3_a0.8] epoch 225 loss 0.0282 valid ndcg@10 0.0418 recall@20 0.1195 *
+[vgames_lightgcn_d64_l3_a0.8] epoch 230 loss 0.0269 valid ndcg@10 0.0417 recall@20 0.1196
+[vgames_lightgcn_d64_l3_a0.8] epoch 235 loss 0.0261 valid ndcg@10 0.0417 recall@20 0.1194
+[vgames_lightgcn_d64_l3_a0.8] epoch 240 loss 0.0257 valid ndcg@10 0.0417 recall@20 0.1197
+[vgames_lightgcn_d64_l3_a0.8] epoch 245 loss 0.0252 valid ndcg@10 0.0416 recall@20 0.1196
+[vgames_lightgcn_d64_l3_a0.8] epoch 250 loss 0.0248 valid ndcg@10 0.0416 recall@20 0.1194
+[vgames_lightgcn_d64_l3_a0.8] epoch 255 loss 0.0240 valid ndcg@10 0.0416 recall@20 0.1192
+[vgames_lightgcn_d64_l3_a0.8] early stop at epoch 255
+[vgames_lightgcn_d64_l3_a0.8] TEST {"recall@10": 0.07813883897506038, "ndcg@10": 0.04198959649218134, "recall@20": 0.11978133306788566, "ndcg@20": 0.05274111706373596} -> /home/ubuntu/movielens-data/project1/results/vgames_lightgcn_d64_l3_a0.8.json
+EXTENSION DONE

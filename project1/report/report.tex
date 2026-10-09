@@ -35,7 +35,10 @@ check sharpens this result: the sparse-data gain survives the strict
 analysis shows the gain concentrates on low-activity users, and a popularity
 analysis reveals that on sparse data part of the gain comes from recommending
 popular items at the cost of catalog coverage
-($62\%\!\rightarrow\!41\%$). We further show a
+($62\%\!\rightarrow\!41\%$). We then propose a one-line fix: generalizing the
+propagation normalization to $d_s^{-\alpha} d_t^{-(1-\alpha)}$; at
+$\alpha{=}0.3$ it is a strict Pareto improvement --- accuracy $+2.8\%$
+NDCG@10 while recovering more than half of the lost coverage. We further show a
 methodological pitfall: under a 300-epoch budget the layer ablation appears to
 exhibit ``over-smoothing'' beyond $L{=}2$, which vanishes entirely once every
 configuration is given a fair 600-epoch budget --- deeper propagation simply
@@ -370,6 +373,54 @@ set is literally ``what the user watched next'', recent co-occurrence
 patterns beat static embeddings, pointing toward temporally-aware models as
 the proper tool for that regime (out of scope here).
 
+\subsection{Extension: degree-$\alpha$ normalization against sparse-regime
+popularity bias}\label{sec:alpha}
+
+Sections~\ref{sec:temporal} and the coverage analysis identified LightGCN's
+weakness in the sparse regime: propagation concentrates probability mass on
+popular items. We propose a one-line extension that attacks this at the
+mechanism level. In LightGCN a message from node $s$ to node $t$ is weighted
+$(d_s d_t)^{-1/2}$; we generalize this to
+\begin{equation}
+w_{s\rightarrow t} = d_s^{-\alpha}\, d_t^{-(1-\alpha)},
+\end{equation}
+where $\alpha{=}0.5$ recovers the original model exactly (another clean
+ablation by construction) and larger $\alpha$ makes high-degree (popular)
+nodes ``speak more quietly'' during propagation. Related normalization
+families have been explored for the accuracy--novelty trade-off
+\cite{radjnorm}; our contribution is to connect the knob directly to the
+sparse-regime coverage collapse we measured, and to evaluate it there.
+
+\begin{table}[h]\centering
+\input{tab_alpha}
+\caption{Degree-$\alpha$ sweep on Video Games ($L{=}3$, $d{=}64$, 600-epoch
+budget). Accuracy and beyond-accuracy metrics of the recommendation lists.}
+\label{tab:alpha}
+\end{table}
+
+Table~\ref{tab:alpha} reports accuracy together with catalog coverage and the
+mean training popularity of recommended items, and it contains a lesson in
+both directions. Our \emph{initial} hypothesis was that $\alpha > 0.5$
+(silencing popular \emph{senders}) would debias the model; the experiment
+refuted it monotonically --- coverage collapses from 41.4\% to 15.3\% as
+$\alpha$ rises to 0.8, with accuracy falling alongside. The mechanism:
+raising $\alpha$ necessarily lowers the \emph{receiver} exponent $(1-\alpha)$,
+so popular items accumulate mass with less normalization when receiving
+messages, and this effect dominates. The true debias direction is therefore
+$\boldsymbol{\alpha < 0.5}$: normalize receivers harder. There,
+\textbf{$\alpha{=}0.3$ is a strict Pareto improvement over the original
+LightGCN}: NDCG@10 rises $0.0494\!\rightarrow\!0.0508$ ($+2.8\%$), Recall@20
+$+3.0\%$, catalog coverage recovers from 41.4\% to 53.4\% (of the 21 points
+lost relative to MF, more than half is regained), and the mean popularity of
+recommendations drops below the original's. At $\alpha{=}0.2$ coverage climbs
+further to 57.2\% --- essentially MF's level --- while accuracy begins to
+fall back toward the original, locating the accuracy peak at
+$\alpha\!\approx\!0.3$. A single mechanism-level knob thus fixes most of the
+weakness identified in Section~4.6 \emph{while improving accuracy}, and the
+refuted first guess is itself informative: in bipartite propagation, how
+strongly popular nodes \emph{receive} matters more than how loudly they
+\emph{speak}.
+
 \section{Discussion: strengths, weaknesses, key factors}
 
 \textbf{MF-BPR} is fast (best epoch within 45--125), simple, trivially
@@ -398,8 +449,12 @@ points of catalog coverage. Two methodological lessons generalize beyond this
 project: training budget can masquerade as over-smoothing in depth ablations,
 and split protocol can masquerade as model superiority --- ablations must
 equalize convergence, and headline claims should be re-checked under temporal
-splits. Future work: a popularity-debiasing extension of LightGCN targeted at
-the sparse regime, which our analysis suggests is where the headroom lies.
+splits. Finally, acting on our own diagnosis, we implemented a
+popularity-debiasing extension --- the degree-$\alpha$ normalization of
+Section~\ref{sec:alpha} --- and found that $\alpha{=}0.3$ improves accuracy
+and catalog coverage simultaneously in the sparse regime, confirming that
+the popularity concentration we measured was not a necessary price of graph
+propagation but an artifact of its symmetric normalization.
 
 \begin{thebibliography}{9}
 \bibitem{bpr} S.~Rendle, C.~Freudenthaler, Z.~Gantner, L.~Schmidt-Thieme.
@@ -414,6 +469,9 @@ History and Context. \emph{ACM TiiS}, 2015.
 \bibitem{amazon23} Y.~Hou, J.~Li, Z.~He, A.~Yan, X.~Chen, J.~McAuley.
 Bridging Language and Items for Retrieval and Recommendation.
 arXiv:2403.03952, 2024.
+\bibitem{radjnorm} M.~Zhao, L.~Wu, Y.~Liang, L.~Chen, J.~Zhang, Q.~Deng,
+K.~Wang, X.~Shen, T.~Lv, R.~Wu. Investigating Accuracy-Novelty Performance
+for Graph-based Collaborative Filtering. \emph{SIGIR}, 2022.
 \end{thebibliography}
 
 \end{document}
