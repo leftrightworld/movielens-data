@@ -1,0 +1,18 @@
+{
+  "name": "ml-1m_pop",
+  "config": {
+    "dataset": "ml-1m",
+    "model": "pop",
+    "knn": 100
+  },
+  "device": "mps",
+  "train_seconds": 3.6,
+  "best_epoch": 0,
+  "test": {
+    "recall@10": 0.07309354504903656,
+    "recall@20": 0.12232649605884661,
+    "ndcg@10": 0.13040289507072514,
+    "ndcg@20": 0.13287248175422317
+  },
+  "history": []
+}

@@ -1,0 +1,18 @@
+{
+  "name": "ml-1m_itemknn",
+  "config": {
+    "dataset": "ml-1m",
+    "model": "itemknn",
+    "knn": 100
+  },
+  "device": "mps",
+  "train_seconds": 6.1,
+  "best_epoch": 0,
+  "test": {
+    "recall@10": 0.13226315342222908,
+    "recall@20": 0.1960814118289118,
+    "ndcg@10": 0.21985484366219252,
+    "ndcg@20": 0.21878214664337015
+  },
+  "history": []
+}
