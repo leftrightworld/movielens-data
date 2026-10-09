@@ -37,31 +37,56 @@ with open(HERE / "tab_datasets.tex", "w") as f:
     f.write("\\bottomrule\n\\end{tabular}\n")
 
 # ---------- main results ----------
-MAIN = [
-    ("MovieLens-1M", "MF-BPR", "ml-1m_mf_d64"),
-    ("MovieLens-1M", "LightGCN ($L{=}3$)", "ml-1m_lightgcn_d64_l3"),
-    ("Video Games", "MF-BPR", "vgames_mf_d64"),
-    ("Video Games", "LightGCN ($L{=}3$)", "vgames_lightgcn_d64_l3"),
-]
+METHODS = [("Popularity", "{ds}_pop"), ("ItemKNN ($k{=}100$)", "{ds}_itemknn"),
+           ("MF-BPR", "{ds}_mf_d64"), ("LightGCN ($L{=}3$)", "{ds}_lightgcn_d64_l3")]
+
 with open(HERE / "tab_main.tex", "w") as f:
     f.write("\\begin{tabular}{llrrrrr}\n\\toprule\n")
     f.write("Dataset & Model & R@10 & N@10 & R@20 & N@20 & Best ep. \\\\\n\\midrule\n")
-    prev = None
-    for ds, model, name in MAIN:
-        r = res(name)
-        t = r["test"]
-        f.write(f"{ds if ds != prev else ''} & {model} & "
-                f"{t['recall@10']:.4f} & {t['ndcg@10']:.4f} & "
-                f"{t['recall@20']:.4f} & {t['ndcg@20']:.4f} & {r['best_epoch']} \\\\\n")
-        if "LightGCN" in model:
-            mf = res(name.replace("lightgcn_d64_l3", "mf_d64"))["test"]
-            gains = " & ".join(
-                f"{100*(t[m]-mf[m])/mf[m]:+.1f}\\%"
-                for m in ("recall@10", "ndcg@10", "recall@20", "ndcg@20"))
-            f.write(f" & \\emph{{relative gain}} & {gains} & \\\\\n")
-            if ds == "MovieLens-1M":
-                f.write("\\midrule\n")
-        prev = ds
+    for di, (ds, label) in enumerate((("ml-1m", "MovieLens-1M"),
+                                      ("vgames", "Video Games"))):
+        for mi, (model, pat) in enumerate(METHODS):
+            r = res(pat.format(ds=ds))
+            t = r["test"]
+            ep = r["best_epoch"] if r["best_epoch"] else "--"
+            f.write(f"{label if mi == 0 else ''} & {model} & "
+                    f"{t['recall@10']:.4f} & {t['ndcg@10']:.4f} & "
+                    f"{t['recall@20']:.4f} & {t['ndcg@20']:.4f} & {ep} \\\\\n")
+        lg = res(f"{ds}_lightgcn_d64_l3")["test"]
+        mf = res(f"{ds}_mf_d64")["test"]
+        gains = " & ".join(
+            f"{100*(lg[m]-mf[m])/mf[m]:+.1f}\\%"
+            for m in ("recall@10", "ndcg@10", "recall@20", "ndcg@20"))
+        f.write(f" & \\emph{{LightGCN vs.\\ MF}} & {gains} & \\\\\n")
+        if di == 0:
+            f.write("\\midrule\n")
+    f.write("\\bottomrule\n\\end{tabular}\n")
+
+# ---------- temporal-split robustness ----------
+with open(HERE / "tab_temporal.tex", "w") as f:
+    f.write("\\begin{tabular}{llrrrr}\n\\toprule\n")
+    f.write(" & & \\multicolumn{2}{c}{Random split} & "
+            "\\multicolumn{2}{c}{Temporal split} \\\\\n")
+    f.write("Dataset & Model & N@10 & R@20 & N@10 & R@20 \\\\\n\\midrule\n")
+    for di, (ds, label) in enumerate((("ml-1m", "MovieLens-1M"),
+                                      ("vgames", "Video Games"))):
+        for mi, (model, pat) in enumerate(METHODS):
+            rr = res(pat.format(ds=ds))["test"]
+            rt = res(pat.format(ds=f"{ds}-t"))["test"]
+            f.write(f"{label if mi == 0 else ''} & {model} & "
+                    f"{rr['ndcg@10']:.4f} & {rr['recall@20']:.4f} & "
+                    f"{rt['ndcg@10']:.4f} & {rt['recall@20']:.4f} \\\\\n")
+        g = {}
+        for proto, suffix in (("rand", ""), ("temp", "-t")):
+            lg = res(f"{ds}{suffix}_lightgcn_d64_l3")["test"]
+            mf = res(f"{ds}{suffix}_mf_d64")["test"]
+            g[proto] = {m: 100 * (lg[m] - mf[m]) / mf[m]
+                        for m in ("ndcg@10", "recall@20")}
+        f.write(f" & \\emph{{LightGCN vs.\\ MF}} & "
+                f"{g['rand']['ndcg@10']:+.1f}\\% & {g['rand']['recall@20']:+.1f}\\% & "
+                f"{g['temp']['ndcg@10']:+.1f}\\% & {g['temp']['recall@20']:+.1f}\\% \\\\\n")
+        if di == 0:
+            f.write("\\midrule\n")
     f.write("\\bottomrule\n\\end{tabular}\n")
 
 # ---------- activity buckets ----------

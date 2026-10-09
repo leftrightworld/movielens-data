@@ -1,0 +1,18 @@
+{
+  "name": "vgames_pop",
+  "config": {
+    "dataset": "vgames",
+    "model": "pop",
+    "knn": 100
+  },
+  "device": "cuda",
+  "train_seconds": 10.8,
+  "best_epoch": 0,
+  "test": {
+    "recall@10": 0.026666048242998917,
+    "recall@20": 0.042648553879585306,
+    "ndcg@10": 0.013606677571615154,
+    "ndcg@20": 0.017727089543215887
+  },
+  "history": []
+}

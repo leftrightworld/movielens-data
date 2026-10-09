@@ -110,19 +110,17 @@ bash src/run_all.sh           # all runs; ~1.5 h on one NVIDIA L4
 Each run writes `results/<name>.json` (config, history, best validation and
 test metrics); main runs also save embeddings and top-K lists for analysis."""))
 
-C.append(md("## 5. Results\n\n### 5.1 Main comparison (test set, dim 64)"))
-C.append(code(r"""runs = {
-    ("MovieLens-1M", "MF-BPR"): "ml-1m_mf_d64",
-    ("MovieLens-1M", "LightGCN (3 layers)"): "ml-1m_lightgcn_d64_l3",
-    ("Video Games", "MF-BPR"): "vgames_mf_d64",
-    ("Video Games", "LightGCN (3 layers)"): "vgames_lightgcn_d64_l3",
-}
+C.append(md("## 5. Results\n\n### 5.1 Main comparison (test set; dim 64 for the "
+            "learned models; Popularity / ItemKNN are no-training baselines "
+            "from `src/baselines.py`)"))
+C.append(code(r"""METHODS = [("Popularity", "{ds}_pop"), ("ItemKNN k=100", "{ds}_itemknn"),
+           ("MF-BPR", "{ds}_mf_d64"), ("LightGCN (3 layers)", "{ds}_lightgcn_d64_l3")]
 rows = []
-for (ds, model), name in runs.items():
-    r = load_result(name)
-    rows.append({"dataset": ds, "model": model, **r["test"],
-                 "best_epoch": r["best_epoch"],
-                 "train_min": round(r["train_seconds"] / 60, 1)})
+for ds, label in (("ml-1m", "MovieLens-1M"), ("vgames", "Video Games")):
+    for model, pat in METHODS:
+        r = load_result(pat.format(ds=ds))
+        rows.append({"dataset": label, "model": model, **r["test"],
+                     "best_epoch": r["best_epoch"]})
 main = pd.DataFrame(rows).set_index(["dataset", "model"])
 display(main.round(4))
 
@@ -247,7 +245,30 @@ for ds, title in (("ml-1m", "MovieLens-1M"), ("vgames", "Video Games")):
 display(pd.DataFrame(rows).set_index(["dataset", "model"]))
 """))
 
-C.append(md("### 6.3 Case study (MovieLens-1M): one cold and one heavy user"))
+C.append(md("### 6.3 Robustness: temporal split (predict the future from the past)\n\n"
+            "The main protocol is the standard per-user random split. Here we "
+            "re-run all four methods on a stricter chronological split "
+            "(`python3 src/data_prep.py --temporal`): each user's last 10% of "
+            "interactions form the test set."))
+C.append(code(r"""rows = []
+for ds, label in (("ml-1m", "MovieLens-1M"), ("vgames", "Video Games")):
+    for model, pat in METHODS:
+        rr = load_result(pat.format(ds=ds))["test"]
+        rt = load_result(pat.format(ds=f"{ds}-t"))["test"]
+        rows.append({"dataset": label, "model": model,
+                     "random ndcg@10": rr["ndcg@10"], "temporal ndcg@10": rt["ndcg@10"],
+                     "random recall@20": rr["recall@20"], "temporal recall@20": rt["recall@20"]})
+tmp = pd.DataFrame(rows).set_index(["dataset", "model"])
+display(tmp.round(4))
+for ds, label in (("ml-1m", "MovieLens-1M"), ("vgames", "Video Games")):
+    for suffix, proto in (("", "random  "), ("-t", "temporal")):
+        lg = load_result(f"{ds}{suffix}_lightgcn_d64_l3")["test"]
+        mf = load_result(f"{ds}{suffix}_mf_d64")["test"]
+        gain = 100 * (lg["ndcg@10"] - mf["ndcg@10"]) / mf["ndcg@10"]
+        print(f"{label:14s} {proto} LightGCN vs MF (ndcg@10): {gain:+.1f}%")
+"""))
+
+C.append(md("### 6.4 Case study (MovieLens-1M): one cold and one heavy user"))
 C.append(code(r"""movies = pd.read_csv(ROOT.parent / "movielens-1m" / "movies.csv")
 z = np.load(DATA / "ml-1m.npz")
 n_users = int(z["n_users"])
@@ -310,6 +331,14 @@ C.append(md(r"""## 7. Conclusions (summary — full discussion in the report PDF
    "shallow-L peak" at 300 epochs was a training-budget artifact.
 5. LightGCN at d=16 beats MF at d=64 (parameter efficiency), but needs ~10×
    the training compute to converge.
+6. Baselines anchor the scale: methods line up Popularity < ItemKNN < MF <
+   LightGCN on the main protocol — except that on sparse data the non-learned
+   ItemKNN already beats MF (co-occurrence is itself one-hop graph signal).
+7. **Temporal-split robustness** (Section 6.3): the sparse-data gain survives
+   the strict predict-the-future protocol (+43.5% → +38.2%), while the
+   dense-data gain vanishes (+6.1% → +0.4%) — it was within the margin
+   inflated by random-split leakage. The headline claim holds exactly where
+   it matters.
 
 ## 8. Repository layout
 

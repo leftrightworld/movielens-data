@@ -25,12 +25,17 @@ convolutional network over the user--item interaction graph. Both are
 implemented from scratch in PyTorch and evaluated under an identical
 full-ranking protocol on two datasets chosen to differ mainly in interaction
 density: MovieLens-1M (dense, 4.8\%) and Amazon Reviews 2023 Video Games
-($144\times$ sparser, 0.034\%). LightGCN outperforms MF-BPR on both datasets,
+($144\times$ sparser, 0.034\%), with popularity and ItemKNN baselines as
+anchors. LightGCN outperforms MF-BPR on both datasets,
 but the margin grows by an order of magnitude with sparsity: $+6.1\%$ NDCG@10
-on MovieLens-1M versus $+43.5\%$ on Video Games. Per-user analysis shows the
-gain concentrates on low-activity users, and a popularity analysis reveals
-that on sparse data part of the gain comes from recommending popular items at
-the cost of catalog coverage ($62\%\!\rightarrow\!41\%$). We further show a
+on MovieLens-1M versus $+43.5\%$ on Video Games. A temporal-split robustness
+check sharpens this result: the sparse-data gain survives the strict
+``predict-the-future'' protocol ($+38.2\%$) while the dense-data gain vanishes
+($+0.4\%$), falling within the margin inflated by temporal leakage. Per-user
+analysis shows the gain concentrates on low-activity users, and a popularity
+analysis reveals that on sparse data part of the gain comes from recommending
+popular items at the cost of catalog coverage
+($62\%\!\rightarrow\!41\%$). We further show a
 methodological pitfall: under a 300-epoch budget the layer ablation appears to
 exhibit ``over-smoothing'' beyond $L{=}2$, which vanishes entirely once every
 configuration is given a fair 600-epoch budget --- deeper propagation simply
@@ -115,6 +120,19 @@ than hurts for recommendation. Layer $k$ mixes in $k$-hop neighbors, so
 $L{=}2$ already reaches other users' items. Setting $L{=}0$ recovers MF-BPR
 exactly --- the comparison is a clean ablation by construction.
 
+\subsection{Reference baselines}
+
+To anchor the comparison we add two non-learned baselines evaluated under the
+identical protocol. \textbf{Popularity} ranks items by their training-set
+interaction count and serves the same list to every user --- the ``zero
+personalization'' floor. \textbf{ItemKNN} computes cosine similarity between
+item columns of the binary interaction matrix (truncated to each item's top
+$k{=}100$ neighbors) and scores
+$\hat y_{ui}=\sum_{j \in \mathcal{N}_u}\mathrm{sim}(i,j)$ --- the classic
+neighborhood heuristic. Together with MF and LightGCN they form a
+three-generation lineage: statistical heuristic $\rightarrow$ shallow
+representation learning $\rightarrow$ graph representation learning.
+
 \subsection{Implementation}
 
 Both models are implemented from scratch in PyTorch ($\sim$100 lines total).
@@ -169,25 +187,38 @@ stopping (patience 30 epochs). The training budget is 300 epochs for MF
 the larger budget is discussed in Section~\ref{sec:ablation}. The full queue
 of 18+ runs completes in $\approx$1.5\,h on one NVIDIA L4 GPU.
 
+The main experiments use the standard per-user \emph{random} 80/10/10 split
+(as in the LightGCN paper). Because random splits let a model ``see the
+future'' --- including the future popularity of items --- we additionally
+re-run all four methods under a stricter \emph{temporal} split (per user, the
+chronologically last 10\% of interactions form the test set) as a robustness
+check in Section~\ref{sec:temporal}.
+
 \section{Results and Analysis}
 
 \subsection{Main comparison}
 
 \begin{table}[h]\centering
 \input{tab_main}
-\caption{Test-set results at $d{=}64$ (R = Recall, N = NDCG). LightGCN wins
-everywhere, but the relative gain is $\sim$7$\times$ larger on the sparse
+\caption{Test-set results (R = Recall, N = NDCG; $d{=}64$ for the learned
+models). The method generations improve in order on both datasets; LightGCN
+wins everywhere, but its gain over MF is $\sim$7$\times$ larger on the sparse
 dataset.}
 \label{tab:main}
 \end{table}
 
-Table~\ref{tab:main} shows the central result. On dense MovieLens-1M,
-LightGCN improves NDCG@10 by $+6.1\%$; on Video Games the same architecture
-change yields $+43.5\%$. The comparison isolates the propagation step as the
-only difference, so we conclude that \textbf{the value of higher-order graph
-signal grows sharply as direct per-user signal shrinks}. On dense data most
-of what the graph could tell the model is already present in each user's own
-long history.
+Table~\ref{tab:main} shows the central result. The four methods line up in
+generation order on both datasets --- Popularity $<$ ItemKNN $<$ MF-BPR $<$
+LightGCN --- and the baselines calibrate the scale: on MovieLens-1M the
+no-personalization Popularity list already reaches roughly half of MF's
+NDCG@10, so the interesting differences are concentrated in the upper half of
+the table. On dense MovieLens-1M, LightGCN improves NDCG@10 over MF by
+$+6.1\%$; on Video Games the same architecture change yields $+43.5\%$. The
+MF/LightGCN comparison isolates the propagation step as the only difference,
+so we conclude that \textbf{the value of higher-order graph signal grows
+sharply as direct per-user signal shrinks}. On dense data most of what the
+graph could tell the model is already present in each user's own long
+history.
 
 \subsection{Convergence behaviour}
 
@@ -308,6 +339,37 @@ the product goal values discovery and long-tail exposure, this is a genuine
 weakness of LightGCN in sparse regimes --- and, we believe, the most
 promising direction for improving the method.
 
+\subsection{Robustness check: temporal split}\label{sec:temporal}
+
+\begin{table}[h]\centering
+\input{tab_temporal}
+\caption{Random vs.\ temporal (per-user leave-last-10\%) splits, all four
+methods. Absolute numbers drop sharply under the temporal protocol; the
+LightGCN-over-MF gain survives on the sparse dataset but vanishes on the
+dense one.}
+\label{tab:temporal}
+\end{table}
+
+Random splits let a model ``see the future'', including the future popularity
+of items, so we re-ran all four methods under a strict chronological split
+(Table~\ref{tab:temporal}). Three observations. First, \emph{every} method
+loses most of its absolute score (e.g.\ MF on MovieLens-1M: NDCG@10
+$0.246\!\rightarrow\!0.076$) --- a measure of how much random-split numbers
+are inflated by temporal leakage, and a reminder that offline numbers under
+the standard protocol must not be read as deployment estimates. Second, and
+central to our thesis: \textbf{the sparse-data advantage survives the strict
+protocol essentially intact ($+43.5\%\!\rightarrow\!+38.2\%$ NDCG@10), while
+the dense-data advantage disappears ($+6.1\%\!\rightarrow\!+0.4\%$)}. The
+small dense-data gain observed under the random split falls within the margin
+attributable to leakage; the sparse-data gain does not. Our headline
+conclusion therefore sharpens: graph propagation helps \emph{where data is
+sparse}, and only there does the claim withstand the stricter protocol.
+Third, on MovieLens-1M under the temporal split the non-learned ItemKNN
+(0.0812) outperforms both learned models ($\approx$0.076) --- when the test
+set is literally ``what the user watched next'', recent co-occurrence
+patterns beat static embeddings, pointing toward temporally-aware models as
+the proper tool for that regime (out of scope here).
+
 \section{Discussion: strengths, weaknesses, key factors}
 
 \textbf{MF-BPR} is fast (best epoch within 45--125), simple, trivially
@@ -325,15 +387,19 @@ epoch budget must be increased together.
 \section{Conclusion}
 
 We compared MF-BPR and LightGCN under a controlled protocol in which graph
-propagation is the only moving part. The higher-order signal helps
-everywhere but matters most where direct signal is scarce: sparse datasets
-and cold users. The gains are real but not free --- slower convergence, more
-compute per step, and on sparse data a shift toward popular items that
-sacrifices 21 points of catalog coverage. Finally, our layer ablation shows
-that training budget can masquerade as over-smoothing, a reminder that
-ablations must equalize convergence, not just epochs. Future work: a
-popularity-debiasing extension of LightGCN targeted at the sparse regime,
-which our analysis suggests is where the headroom lies.
+propagation is the only moving part, anchored by popularity and ItemKNN
+baselines. The higher-order signal matters where direct signal is scarce:
+sparse datasets and cold users. Our temporal-split check makes this precise
+--- the sparse-data gain survives the strict protocol ($+38.2\%$), while the
+dense-data gain proves to be largely an artifact of random-split leakage
+($+0.4\%$). The gains are also not free: slower convergence, more compute per
+step, and on sparse data a shift toward popular items that sacrifices 21
+points of catalog coverage. Two methodological lessons generalize beyond this
+project: training budget can masquerade as over-smoothing in depth ablations,
+and split protocol can masquerade as model superiority --- ablations must
+equalize convergence, and headline claims should be re-checked under temporal
+splits. Future work: a popularity-debiasing extension of LightGCN targeted at
+the sparse regime, which our analysis suggests is where the headroom lies.
 
 \begin{thebibliography}{9}
 \bibitem{bpr} S.~Rendle, C.~Freudenthaler, Z.~Gantner, L.~Schmidt-Thieme.

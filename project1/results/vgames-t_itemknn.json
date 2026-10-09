@@ -1,0 +1,18 @@
+{
+  "name": "vgames-t_itemknn",
+  "config": {
+    "dataset": "vgames-t",
+    "model": "itemknn",
+    "knn": 100
+  },
+  "device": "cuda",
+  "train_seconds": 18.2,
+  "best_epoch": 0,
+  "test": {
+    "recall@10": 0.03440778412258687,
+    "recall@20": 0.051133588815350885,
+    "ndcg@10": 0.019218838737111898,
+    "ndcg@20": 0.023515681314254473
+  },
+  "history": []
+}
