@@ -84,6 +84,8 @@ def main():
     p.add_argument("--model", required=True, choices=["mf", "lightgcn"])
     p.add_argument("--dim", type=int, default=64)
     p.add_argument("--layers", type=int, default=3)
+    p.add_argument("--alpha", type=float, default=0.5,
+                   help="LightGCN degree-normalization exponent (0.5 = original)")
     p.add_argument("--lr", type=float, default=1e-3)
     p.add_argument("--reg", type=float, default=1e-4)
     p.add_argument("--batch", type=int, default=8192)
@@ -110,8 +112,10 @@ def main():
         name = f"{args.dataset}_mf_d{args.dim}"
     else:
         model = LightGCN(n_users, n_items, args.dim, args.layers,
-                         torch.from_numpy(train))
+                         torch.from_numpy(train), alpha=args.alpha)
         name = f"{args.dataset}_lightgcn_d{args.dim}_l{args.layers}"
+        if args.alpha != 0.5:
+            name += f"_a{args.alpha}"
     if args.tag:
         name += f"_{args.tag}"
     model = model.to(device)
@@ -172,6 +176,8 @@ def main():
     test_m, topk = evaluate(model, train_by_user, test_by_user,
                             n_users, n_items, device,
                             extra_mask_by_user=valid_by_user)
+    item_pop = np.bincount(train[:, 1], minlength=n_items)
+    top10 = topk[:, :10]
     result = {
         "name": name,
         "config": vars(args),
@@ -180,6 +186,10 @@ def main():
         "best_epoch": best["epoch"],
         "valid": {k: v for k, v in best.items() if k != "epoch"},
         "test": test_m,
+        "beyond_accuracy": {
+            "coverage@10": round(100 * len(np.unique(top10)) / n_items, 2),
+            "mean_pop@10": round(float(item_pop[top10].mean()), 1),
+        },
         "history": history,
     }
     out = HERE / "results" / f"{name}.json"

@@ -33,8 +33,15 @@ class MFBPR(nn.Module):
 
 class LightGCN(nn.Module):
     def __init__(self, n_users: int, n_items: int, dim: int, n_layers: int,
-                 train_edges: torch.Tensor):
-        """train_edges: LongTensor (E, 2) of (user_idx, item_idx) train pairs."""
+                 train_edges: torch.Tensor, alpha: float = 0.5):
+        """train_edges: LongTensor (E, 2) of (user_idx, item_idx) train pairs.
+
+        alpha controls degree normalization: a message from node s to node t
+        is weighted deg(s)^-alpha * deg(t)^-(1-alpha). alpha = 0.5 recovers
+        the symmetric 1/sqrt(deg_s * deg_t) of the original LightGCN; larger
+        alpha penalizes high-degree (popular) source nodes harder, countering
+        the popularity concentration we observe on sparse graphs.
+        """
         super().__init__()
         self.n_users, self.n_items, self.n_layers = n_users, n_items, n_layers
         self.user_emb = nn.Embedding(n_users, dim)
@@ -42,16 +49,17 @@ class LightGCN(nn.Module):
         nn.init.normal_(self.user_emb.weight, std=0.01)
         nn.init.normal_(self.item_emb.weight, std=0.01)
 
-        # Bidirectional edges on the joint (users + items) node index space,
-        # with symmetric normalization 1 / sqrt(deg_u * deg_i).
+        # Bidirectional edges on the joint (users + items) node index space.
         u, i = train_edges[:, 0], train_edges[:, 1] + n_users
         deg = torch.zeros(n_users + n_items)
         deg.index_add_(0, u, torch.ones(len(u)))
         deg.index_add_(0, i, torch.ones(len(i)))
-        w = (deg[u] * deg[i]).clamp(min=1).rsqrt()
+        deg = deg.clamp(min=1)
+        w_u2i = deg[u].pow(-alpha) * deg[i].pow(-(1 - alpha))
+        w_i2u = deg[i].pow(-alpha) * deg[u].pow(-(1 - alpha))
         self.register_buffer("src", torch.cat([u, i]))
         self.register_buffer("dst", torch.cat([i, u]))
-        self.register_buffer("w", torch.cat([w, w]).unsqueeze(1))
+        self.register_buffer("w", torch.cat([w_u2i, w_i2u]).unsqueeze(1))
 
     def propagate(self):
         x = torch.cat([self.user_emb.weight, self.item_emb.weight])
