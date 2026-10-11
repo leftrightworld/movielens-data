@@ -3,3 +3,4 @@ project1/report/*.log
 project1/report/*.out
 project1/results/*_a0*_emb.npz
 project1/report/contribution.*
+project1/report/authors.tex
