@@ -370,7 +370,7 @@ C.append(md(r"""## 7. Conclusions (summary — full discussion in the report PDF
    sparse data it does the opposite (coverage 62% → 41%).
 4. No over-smoothing up to L=4 under a fair 600-epoch budget; the apparent
    "shallow-L peak" at 300 epochs was a training-budget artifact.
-5. LightGCN at d=16 beats MF at d=64 (parameter efficiency), but needs ~10×
+5. LightGCN at d=16 beats MF at d=64 (parameter efficiency), but needs 4-10×
    the training compute to converge.
 6. Baselines anchor the scale: methods line up Popularity < ItemKNN < MF <
    LightGCN on the main protocol — except that on sparse data the non-learned

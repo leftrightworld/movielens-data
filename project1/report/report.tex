@@ -27,7 +27,7 @@ full-ranking protocol on two datasets chosen to differ mainly in interaction
 density: MovieLens-1M (dense, 4.8\%) and Amazon Reviews 2023 Video Games
 ($144\times$ sparser, 0.034\%), with popularity and ItemKNN baselines as
 anchors. LightGCN outperforms MF-BPR on both datasets,
-but the margin grows by an order of magnitude with sparsity: $+6.1\%$ NDCG@10
+but the margin grows roughly sevenfold with sparsity: $+6.1\%$ NDCG@10
 on MovieLens-1M versus $+43.5\%$ on Video Games. A temporal-split robustness
 check sharpens this result: the sparse-data gain survives the strict
 ``predict-the-future'' protocol ($+38.2\%$) while the dense-data gain vanishes
@@ -37,10 +37,10 @@ analysis reveals that on sparse data part of the gain comes from recommending
 popular items at the cost of catalog coverage
 ($62\%\!\rightarrow\!41\%$). We then propose a one-line fix: generalizing the
 propagation normalization to $d_s^{-\alpha} d_t^{-(1-\alpha)}$; at
-$\alpha{=}0.3$ it is a strict Pareto improvement --- accuracy $+2.8\%$
+$\alpha{=}0.3$ it is a strict Pareto improvement --- accuracy $+2.9\%$
 NDCG@10 while recovering more than half of the lost coverage. We further show a
 methodological pitfall: under a 300-epoch budget the layer ablation appears to
-exhibit ``over-smoothing'' beyond $L{=}2$, which vanishes entirely once every
+exhibit ``over-smoothing'' at deeper $L$, which vanishes entirely once every
 configuration is given a fair 600-epoch budget --- deeper propagation simply
 converges more slowly. All results are produced by our own code and are
 reproducible from fixed seeds.
@@ -211,9 +211,12 @@ dataset.}
 \label{tab:main}
 \end{table}
 
-Table~\ref{tab:main} shows the central result. The four methods line up in
-generation order on both datasets --- Popularity $<$ ItemKNN $<$ MF-BPR $<$
-LightGCN --- and the baselines calibrate the scale: on MovieLens-1M the
+Table~\ref{tab:main} shows the central result. The methods largely line up
+in generation order --- Popularity $<$ ItemKNN $<$ MF-BPR $<$ LightGCN ---
+with one telling exception: on sparse Video Games the non-learned ItemKNN
+edges out MF-BPR on three of the four metrics (e.g.\ NDCG@10 0.0380 vs.\
+0.0344). Co-occurrence is itself a one-hop graph signal, so the exception
+already foreshadows the main result. The baselines also calibrate the scale: on MovieLens-1M the
 no-personalization Popularity list already reaches roughly half of MF's
 NDCG@10, so the interesting differences are concentrated in the upper half of
 the table. On dense MovieLens-1M, LightGCN improves NDCG@10 over MF by
@@ -229,7 +232,7 @@ history.
 \begin{figure}[h]\centering
 \includegraphics[width=\textwidth]{convergence.png}
 \caption{Validation NDCG@10 per epoch. MF converges fast and early-stops
-(best epoch 45/125); LightGCN converges $\sim$10$\times$ slower (best epoch
+(best epoch 45/125); LightGCN converges 4--10$\times$ slower (best epoch
 450/565) but reaches a higher plateau.}
 \label{fig:convergence}
 \end{figure}
@@ -356,9 +359,10 @@ dense one.}
 
 Random splits let a model ``see the future'', including the future popularity
 of items, so we re-ran all four methods under a strict chronological split
-(Table~\ref{tab:temporal}). Three observations. First, \emph{every} method
-loses most of its absolute score (e.g.\ MF on MovieLens-1M: NDCG@10
-$0.246\!\rightarrow\!0.076$) --- a measure of how much random-split numbers
+(Table~\ref{tab:temporal}). Three observations. First, absolute scores
+drop sharply --- most dramatically on MovieLens-1M (MF: NDCG@10
+$0.246\!\rightarrow\!0.076$), and by roughly a third for the learned models
+on Video Games --- a measure of how much random-split numbers
 are inflated by temporal leakage, and a reminder that offline numbers under
 the standard protocol must not be read as deployment estimates. Second, and
 central to our thesis: \textbf{the sparse-data advantage survives the strict
@@ -410,7 +414,7 @@ so popular items accumulate mass with less normalization when receiving
 messages, and this effect dominates. The true debias direction is therefore
 $\boldsymbol{\alpha < 0.5}$: normalize receivers harder. There,
 \textbf{$\alpha{=}0.3$ is a strict Pareto improvement over the original
-LightGCN}: NDCG@10 rises $0.0494\!\rightarrow\!0.0508$ ($+2.8\%$), Recall@20
+LightGCN}: NDCG@10 rises $0.0494\!\rightarrow\!0.0508$ ($+2.9\%$), Recall@20
 $+3.0\%$, catalog coverage recovers from 41.4\% to 53.4\% (of the 21 points
 lost relative to MF, more than half is regained), and the mean popularity of
 recommendations drops below the original's. At $\alpha{=}0.2$ coverage climbs
@@ -428,7 +432,7 @@ strongly popular nodes \emph{receive} matters more than how loudly they
 scalable, and surprisingly strong on dense data and heavy users; its weakness
 is cold users, for whom it has almost no signal. \textbf{LightGCN} delivers
 consistent accuracy gains that concentrate exactly where MF is weakest, and is
-remarkably parameter-efficient; its costs are $\sim$10$\times$ slower
+remarkably parameter-efficient; its costs are 4--10$\times$ slower
 convergence, a full-graph propagation per step, and a popularity/coverage
 regression on sparse graphs. The key factors affecting performance in our
 experiments were, in order: dataset density, training budget (especially for
