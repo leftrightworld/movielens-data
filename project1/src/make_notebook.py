@@ -3,16 +3,38 @@
 The notebook collects the source code in src/ with short markdown notes and
 brief conclusions. The full discussion lives in the PDF report (report/).
 """
+import io
+import tokenize
 from pathlib import Path
 
 import nbformat as nbf
 
 HERE = Path(__file__).resolve().parent
-MODELS_SRC = (HERE / "models.py").read_text().rstrip()
+
+
+def strip_comments(src: str) -> str:
+    """Remove every # comment from python source (string-safe via tokenizer)."""
+    lines = src.split("\n")
+    pure = set()
+    for tok in tokenize.generate_tokens(io.StringIO(src).readline):
+        if tok.type == tokenize.COMMENT:
+            row, col = tok.start
+            if lines[row - 1][:col].strip() == "":
+                pure.add(row - 1)
+            lines[row - 1] = lines[row - 1][:col].rstrip()
+    return "\n".join(l for k, l in enumerate(lines) if k not in pure)
+
+
+MODELS_SRC = strip_comments((HERE / "models.py").read_text().rstrip())
 
 nb = nbf.v4.new_notebook()
 md = nbf.v4.new_markdown_cell
-code = nbf.v4.new_code_cell
+
+
+def code(src, **kw):
+    return nbf.v4.new_code_cell(strip_comments(src), **kw)
+
+
 C = []
 
 C.append(md(r"""# MF-BPR vs. LightGCN — code companion notebook
@@ -74,7 +96,7 @@ for name, label in (("ml-1m", "MovieLens-1M"), ("vgames", "Amazon Video Games"))
         v = np.sort(cnt)[::-1]
         ax.plot(np.arange(1, len(v) + 1), v, label=f"{label}")
         ax.set_xscale("log"); ax.set_yscale("log")
-        ax.set_xlabel(f"{what} rank"); ax.set_ylabel("# interactions")
+        ax.set_xlabel(f"{what} rank"); ax.set_ylabel("interactions")
 axes[0].set_title("Interactions per user (log-log)")
 axes[1].set_title("Interactions per item (log-log)")
 axes[0].legend(); axes[1].legend()
@@ -103,8 +125,8 @@ NDCG@10 (patience 30 epochs). Budget: 300 epochs for MF, 600 for LightGCN
 Reproduce everything with:
 
 ```bash
-python3 src/data_prep.py      # once
-bash src/run_all.sh           # all runs; ~1.5 h on one NVIDIA L4
+python3 src/data_prep.py
+bash src/run_all.sh
 ```
 
 Each run writes `results/<name>.json` (config, history, best validation and
@@ -363,14 +385,14 @@ C.append(md(r"""## 7. Conclusions (summary — full discussion in the report PDF
 
 ```
 project1/
-├── src/data_prep.py        # preprocessing
-├── src/models.py           # MF-BPR + LightGCN (shown in Section 3)
-├── src/train.py            # training / evaluation CLI
-├── src/run_all.sh          # full experiment queue
-├── data/                   # processed splits (npz) + stats
-├── results/                # one JSON log (+ embeddings) per run
-├── figures/                # all figures produced by this notebook
-└── report/                 # LaTeX source of the report PDF
+├── src/data_prep.py        — preprocessing
+├── src/models.py           — MF-BPR + LightGCN (shown in Section 3)
+├── src/train.py            — training / evaluation CLI
+├── src/run_all.sh          — full experiment queue
+├── data/                   — processed splits (npz) + stats
+├── results/                — one JSON log (+ embeddings) per run
+├── figures/                — all figures produced by this notebook
+└── report/                 — LaTeX source of the report PDF
 ```
 
 Environment: Python 3.9+, `torch`, `pandas`, `numpy`, `matplotlib`. Seed 42;

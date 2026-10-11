@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>"朋友的朋友喜欢什么"能帮推荐系统吗？—— 一个本科生项目的完整故事</title>
+<style>
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+         max-width: 760px; margin: 0 auto; padding: 24px 18px 80px;
+         line-height: 1.85; color: #2c3e50; background: #fdfdfd; }
+  h1 { font-size: 1.55em; line-height: 1.4; border-bottom: 3px solid #e67e22; padding-bottom: 12px; }
+  h2 { font-size: 1.25em; margin-top: 2.2em; color: #1a5276;
+       border-left: 5px solid #e67e22; padding-left: 10px; }
+  img { width: 100%; border: 1px solid #ddd; border-radius: 6px; margin: 14px 0 4px; }
+  .figcap { font-size: 0.88em; color: #666; background: #f4f6f7; padding: 10px 14px;
+            border-radius: 6px; margin-bottom: 1.4em; }
+  table { border-collapse: collapse; width: 100%; margin: 1.2em 0; font-size: 0.92em; }
+  th, td { border: 1px solid #ccc; padding: 7px 10px; text-align: center; }
+  th { background: #eaf2f8; }
+  .hl { background: #fdf2e3; }
+  .term { background: #eaf2f8; border-radius: 4px; padding: 1px 5px; }
+  .box { background: #fef9e7; border-left: 5px solid #f1c40f; padding: 12px 16px;
+         border-radius: 6px; margin: 1.2em 0; }
+  .takeaway { background: #e8f8f5; border-left: 5px solid #1abc9c; padding: 14px 18px;
+              border-radius: 6px; margin: 1.2em 0; }
+  footer { margin-top: 3em; font-size: 0.85em; color: #888; border-top: 1px solid #ddd; padding-top: 1em; }
+  a { color: #2471a3; }
+</style>
+</head>
+<body>
+
+<h1>"朋友的朋友喜欢什么"能帮推荐系统吗？<br>—— 一个数据挖掘课程项目的完整故事</h1>
+
+<p>这是我们课程项目（Technical Review）的通俗版讲解，面向大一大二、没学过机器学习的同学。
+看完你会知道：我们做了一个什么实验、踩了什么坑、以及得出了哪些有点意思的结论。</p>
+
+<h2>一、先说问题：推荐系统怎么猜你喜欢什么</h2>
+
+<p>你刷 B 站、淘宝、网易云，首页推的内容是算法从你的<b>历史行为</b>（点过、买过、听过什么）里猜出来的。
+最经典的思路叫<span class="term">协同过滤</span>——不用懂商品本身，只要发现"买过 A 的人很多也买了 B"，
+就可以把 B 推给刚买 A 的你。"协同"的意思就是：大家的行为互相帮忙。</p>
+
+<p>我们比较了两代方法：</p>
+
+<table>
+<tr><th></th><th>MF（矩阵分解，2009 年的老将）</th><th>LightGCN（图神经网络，2020 年的新秀）</th></tr>
+<tr><td>看什么</td><td>只看<b>你自己</b>的历史</td><td>还看<b>和你相似的人</b>的历史</td></tr>
+<tr><td>打比方</td><td>只翻你自己的购物小票</td><td>把"人—货"画成一张关系网，顺着网走两步：<br>你买的东西 → 也买它的人 → 那些人还买了啥</td></tr>
+</table>
+
+<p>两个方法其余部分完全一样，<b>唯一的区别就是"要不要顺着关系网多看两步"</b>。
+这是故意设计的：这样一旦分出胜负，就能确定是"关系网"这个零件的功劳或责任，不会扯皮。
+我们还拉了两个陪跑当参照物：<span class="term">热门榜</span>（无脑给所有人推销量最高的，代表"零智商底线"）
+和 <span class="term">ItemKNN</span>（"买过 X 的人还买过 Y"的简单统计）。</p>
+
+<h2>二、考场：一个"富"数据集 + 一个"穷"数据集</h2>
+
+<p>实验的灵魂在选数据。我们故意挑了两个极端：</p>
+
+<table>
+<tr><th></th><th>MovieLens 电影评分</th><th>亚马逊游戏区评论</th></tr>
+<tr><td>规模</td><td>100 万条</td><td>81 万条（清洗后）</td></tr>
+<tr><td>平均每人记录数</td><td class="hl"><b>165 条（富）</b></td><td class="hl"><b>8.6 条（穷）</b></td></tr>
+</table>
+
+<img src="/mfbpr-lightgcn-figs/longtail.png" alt="长尾分布">
+<p class="figcap"><b>图 1：</b>把用户按记录数从多到少排队（两根轴都是"每格差10倍"的对数刻度）。
+蓝线（电影）整体高高在上，橙线（游戏）从头到尾"饿"一大截。
+两个数据集就是"信息充足"和"信息饥饿"两种人生。</p>
+
+<p>考试方式：把每个用户的记录藏起来一部分当"标准答案"，让模型给没见过的商品排序出 top-10 推荐，
+看标准答案有多少被排进了前列（指标叫 Recall 和 NDCG，可以理解为"猜中率"和"猜中且排得靠前"）。</p>
+
+<h2>三、结论 1：数据越"穷"，关系网越值钱</h2>
+
+<table>
+<tr><th>数据集</th><th>热门榜</th><th>ItemKNN</th><th>MF</th><th>LightGCN</th><th>LightGCN 比 MF 强多少</th></tr>
+<tr><td>电影（富）</td><td>0.130</td><td>0.220</td><td>0.246</td><td>0.261</td><td>+6%</td></tr>
+<tr><td>游戏（穷）</td><td>0.014</td><td>0.038</td><td>0.034</td><td>0.049</td><td class="hl"><b>+43%</b></td></tr>
+</table>
+
+<p>富数据上只强一点点（你自己 165 条记录已经说明了一切，邻居的信息是锦上添花）；
+穷数据上强非常多（你只有 8 条记录，邻居的信息是雪中送炭）。
+注意一个彩蛋：穷数据上连"非学习"的 ItemKNN 都打败了 MF——因为"共现统计"本质上也是在关系网上走了一步。</p>
+
+<img src="/mfbpr-lightgcn-figs/activity_buckets.png" alt="按用户活跃度分桶">
+<p class="figcap"><b>图 2：</b>把用户按记录多少分组。左图（电影）最扎眼：越往右（用户越活跃）、
+蓝橙柱子差距越小——关系网的提升几乎全给了"冷用户"。我们还抽查过一位看了 476 部电影的重度用户：
+简单的 MF 给他猜中 7 部，LightGCN 反而只中 4 部——对档案厚的人，掺邻居的信息反而会稀释他自己的口味。</p>
+
+<h2>四、结论 2：用"不许偷看未来"的严格规则重考，+6% 露馅了</h2>
+
+<p>这里有个所有推荐论文都存在的隐患：标准做法是把每个人的记录<b>随机</b>抽一部分当答案——
+但这样训练数据里混着"未来"的信息（比如一个商品后来才火，模型却提前知道了）。
+真实世界里只能"用过去预测未来"。我们用严格的按时间切分重考了一遍：</p>
+
+<table>
+<tr><th>LightGCN 比 MF 强多少</th><th>随机切分（会偷看未来）</th><th>按时间切分（严格）</th></tr>
+<tr><td>电影（富）</td><td>+6.1%</td><td class="hl"><b>+0.4%（基本消失！）</b></td></tr>
+<tr><td>游戏（穷）</td><td>+43.5%</td><td class="hl"><b>+38.2%（几乎保住）</b></td></tr>
+</table>
+
+<div class="box">💡 所以诚实的结论是：<b>关系网的优势只在数据稀疏时是"真的"</b>。
+富数据上那一点点优势，换个严格的考试规则就没了——它是"偷看未来"撑起来的假象。
+这也提醒你以后读论文：看到小幅提升，先问一句"换个数据切分方式还在吗？"</div>
+
+<h2>五、结论 3：关系网有个坏毛病——越推越偏爆款</h2>
+
+<p>我们还检查了推荐的"多样性"：全部商品里，有多大比例<b>有机会</b>出现在任何人的 top-10 里（叫覆盖率）。</p>
+
+<table>
+<tr><th>游戏数据集上</th><th>MF</th><th>LightGCN</th></tr>
+<tr><td>商品覆盖率</td><td>62%</td><td class="hl"><b>41%（塌了）</b></td></tr>
+</table>
+
+<p>原因不难想：关系网太稀疏时，随便走两步，几乎所有路都通向少数连接最多的爆款。
+也就是说那 +43% 里有一部分是靠"押注畅销品"赚来的——如果平台想扶持小众好货（想想 B 站小 UP 主），这就是真缺点。</p>
+
+<h2>六、结论 4：这毛病我们自己治好了（只改一个参数）</h2>
+
+<p>LightGCN 在关系网上传消息时有个"音量公式"，里面有个指数 α，原版固定为 0.5。
+我们把它变成可调的旋钮。有趣的是：<b>我们第一次猜的方向是错的</b>——
+本以为调大 α（让爆款"说话小声点"）能去偏，实验结果啪啪打脸：越调越偏。
+反思后发现真正的机制在另一端：调小 α 会让爆款"<b>接收</b>消息时被压得更狠"，这才是去偏的正确方向。</p>
+
+<img src="/mfbpr-lightgcn-figs/alpha_sweep.png" alt="alpha扫描">
+<p class="figcap"><b>图 3：</b>旋钮 α 从 0.2 扫到 0.8。左图：精度在 <b>α=0.3</b> 达到峰值，比原版（灰色虚线）还高；
+右图：α 越小覆盖率越高，α=0.3 时从 41% 回到 53%。绿色竖线就是我们推荐的设置。</p>
+
+<table>
+<tr><th>游戏数据集上</th><th>精度 NDCG@10</th><th>覆盖率</th></tr>
+<tr><td>原版 LightGCN（α=0.5）</td><td>0.0494</td><td>41%</td></tr>
+<tr><td class="hl"><b>我们的（α=0.3）</b></td><td class="hl"><b>0.0508（更准 +2.8%）</b></td><td class="hl"><b>53%（更不偏）</b></td></tr>
+</table>
+
+<div class="box">💡 这说明"偏爆款"不是关系网方法的宿命，只是原公式的一个设计瑕疵——改一行代码就能既更准又更公平。
+而"第一次猜反了"这件事本身也是科研常态：<b>假设被实验打脸之后修正方向，往往比一次猜对学到的更多。</b></div>
+
+<h2>七、三句话带走</h2>
+
+<div class="takeaway">
+<p><b>1.</b> "朋友的朋友喜欢什么"这个信号，对记录少的新用户是雪中送炭（+38%，经得起严格检验），
+对老用户只是锦上添花甚至画蛇添足（+0.4%）。</p>
+<p><b>2.</b> 评测规则会撒谎：让模型"偷看未来"的标准做法可以凭空制造出几个百分点的假优势；
+给深模型的训练时间不够，又会让它看起来比实际差。读论文时多留个心眼。</p>
+<p><b>3.</b> 发现问题 → 查明机制 → 动手修好：关系网爱推爆款的毛病，调一个归一化指数（α=0.5→0.3）
+就能精度与多样性双收——完整闭环比单纯刷个高分有意思得多。</p>
+</div>
+
+<footer>
+<p>课程 Project 1 · Technical Review（MF-BPR vs LightGCN，含 Popularity / ItemKNN 基线、时间切分稳健性检验、degree-α 扩展）<br>
+全部代码与 10 页英文报告：<a href="https://github.com/leftrightworld/movielens-data">github.com/leftrightworld/movielens-data</a>（<code>project1/</code>）<br>
+数据来源：MovieLens-1M（GroupLens）、Amazon Reviews 2023（McAuley Lab, UCSD）。所有数字均为我们自己实验产出。</p>
+</footer>
+
+</body>
+</html>
