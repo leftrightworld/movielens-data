@@ -56,7 +56,7 @@ user--item interactions. A more recent line of work observes that the
 interaction data forms a bipartite graph, and that propagating embeddings over
 this graph injects \emph{higher-order} collaborative signal --- ``users who
 liked the items I liked'' --- into the representation. LightGCN is the
-cleanest representative of this idea: it strips graph convolution down to
+cleanest representative of this idea \cite{lightgcn}: it strips graph convolution down to
 weighted neighborhood averaging, with no feature transforms and no
 nonlinearities.
 
@@ -85,7 +85,7 @@ $\mathcal{O}=\{(u,i)\}$ the observed implicit interactions. Each user and item
 has an embedding $\mathbf{e}_u,\mathbf{e}_i\in\mathbb{R}^d$, and a pair is
 scored $\hat y_{ui}=\mathbf{e}_u^\top\mathbf{e}_i$. At test time we rank all
 items the user has not interacted with in training. Both models are trained
-with the pairwise BPR loss: for each observed $(u,i)$ and a uniformly sampled
+with the pairwise BPR loss \cite{bpr}: for each observed $(u,i)$ and a uniformly sampled
 unobserved item $j$,
 \begin{equation}
 \mathcal{L}_{\mathrm{BPR}}
@@ -118,7 +118,8 @@ $i$,
 and the final embedding is the mean over layers,
 $\mathbf{e}_u=\frac{1}{L+1}\sum_{k=0}^{L}\mathbf{e}_u^{(k)}$. There are no
 weight matrices and no activation functions: LightGCN is deliberately a
-\emph{simplification} of standard GCNs, which its authors showed helps rather
+\emph{simplification} of earlier graph collaborative-filtering models such
+as NGCF \cite{ngcf}, which its authors showed helps rather
 than hurts for recommendation. Layer $k$ mixes in $k$-hop neighbors, so
 $L{=}2$ already reaches other users' items. Setting $L{=}0$ recovers MF-BPR
 exactly --- the comparison is a clean ablation by construction.
@@ -162,9 +163,9 @@ $\sim$144.}
 \label{tab:datasets}
 \end{table}
 
-\textbf{MovieLens-1M} is the classic dense movie-rating benchmark (GroupLens
+\textbf{MovieLens-1M} \cite{movielens} is the classic dense movie-rating benchmark (GroupLens
 Research): 1{,}000{,}209 ratings from 6{,}040 users. \textbf{Amazon Reviews
-2023 -- Video Games} (McAuley Lab, UCSD) contains 4.62M reviews; gaming
+2023 -- Video Games} \cite{amazon23} (McAuley Lab, UCSD) contains 4.62M reviews; gaming
 involves frequent repeat purchasing, so the category retains a healthy
 interaction graph after filtering. Both are converted to implicit feedback
 (every observed pair is a positive), deduplicated, 5-core filtered, and split
