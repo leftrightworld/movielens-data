@@ -276,8 +276,8 @@ returns after $L{=}3$. Second --- and this is a finding we consider as
 valuable as the curve itself --- our \emph{initial} run of this ablation used
 a 300-epoch budget for every $L$ and showed the classic ``peak at shallow
 $L$, degradation at $L{=}4$'' pattern commonly attributed to over-smoothing.
-Doubling the budget removed the degradation entirely: the best epoch grows
-from 110 at $L{=}1$ to $\sim$565 at $L{=}4$, i.e.\ \textbf{deeper propagation
+Doubling the budget removed the degradation entirely: on MovieLens-1M the best epoch grows
+from 110 at $L{=}1$ to $\sim$565 at $L{=}4$ (170 to $\sim$555 on Video Games), i.e.\ \textbf{deeper propagation
 converges more slowly, and an unfair training budget masquerades as
 over-smoothing}. Ablation tables in the literature that fix a single epoch
 budget across depths should be read with this caveat in mind.
@@ -315,10 +315,10 @@ Table~\ref{tab:activity}.}
 Bucketing test users by their training degree (Table~\ref{tab:activity},
 Figure~\ref{fig:activity}) explains where the improvement lives: on
 MovieLens-1M the gain falls monotonically from $+14.6\%$ for the coldest
-quartile to $+3.9\%$ for the most active one. Propagation lets a cold user
+quartile to $+4.0\%$ for the most active one. Propagation lets a cold user
 borrow the histories of neighboring users; a heavy user's own history already
 positions them well, and the borrowed signal adds little. A case study makes
-this concrete (notebook, Section~6.3): for a sampled 476-interaction user,
+this concrete (notebook, Section~6.5): for a sampled 476-interaction user,
 MF places \emph{seven} held-out movies in its top-10 versus LightGCN's four
 --- averaging in neighborhood signal can actually dilute an already
 well-determined profile.
@@ -414,7 +414,7 @@ LightGCN}: NDCG@10 rises $0.0494\!\rightarrow\!0.0508$ ($+2.8\%$), Recall@20
 $+3.0\%$, catalog coverage recovers from 41.4\% to 53.4\% (of the 21 points
 lost relative to MF, more than half is regained), and the mean popularity of
 recommendations drops below the original's. At $\alpha{=}0.2$ coverage climbs
-further to 57.2\% --- essentially MF's level --- while accuracy begins to
+further to 57.2\%, approaching MF's 62.1\%, while accuracy begins to
 fall back toward the original, locating the accuracy peak at
 $\alpha\!\approx\!0.3$. A single mechanism-level knob thus fixes most of the
 weakness identified in Section~4.6 \emph{while improving accuracy}, and the

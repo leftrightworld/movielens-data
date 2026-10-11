@@ -363,8 +363,8 @@ for u, kind in ((cold, "LOW-activity"), ((heavy), "HIGH-activity")):
 C.append(md(r"""## 7. Conclusions (summary — full discussion in the report PDF)
 
 1. LightGCN beats MF-BPR on both datasets: **+6.1%** NDCG@10 on dense
-   MovieLens-1M, **+43.6%** on the 144×-sparser Video Games.
-2. The gain concentrates on **low-activity users** (+14.6% → +3.9% across
+   MovieLens-1M, **+43.5%** on the 144×-sparser Video Games.
+2. The gain concentrates on **low-activity users** (+14.6% → +4.0% across
    ML-1M activity quartiles).
 3. On dense data LightGCN *lowers* popularity bias and raises coverage; on
    sparse data it does the opposite (coverage 62% → 41%).
